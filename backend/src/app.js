@@ -5,12 +5,13 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import cors from "cors";
 import userRoutes from "./routes/users.routes.js"
+import { connnectToSocket } from "./controllers/socketManager.js"
 
 dotenv.config();
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = connnectToSocket(server)
 
 const PORT = process.env.PORT || 3000;
 
