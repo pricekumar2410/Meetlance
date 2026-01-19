@@ -1,3 +1,4 @@
+/* LandingPage CSS */
 .LandingPageContainer {
   width: 100vw;
   height: 100vh;
@@ -5,3 +6,48 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.LandingPageNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem 1rem 3rem;
+}
+
+.LandingPageNav :nth-child(1) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.LandingPageNav :nth-child(1) p {
+  display: contents;
+  font-size: 1.4rem;
+  cursor: default;
+}
+
+.LandingPageNav img {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 4px;
+  margin-right: 0.7rem;
+}
+
+.LandingPageNav :nth-child(2){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  cursor: pointer;
+}
+
+.LandingpageHome {
+  height: 70vh;
+  color: white;
+  padding: 0rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
