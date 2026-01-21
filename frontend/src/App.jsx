@@ -4,8 +4,9 @@ import LandingPage from './pages/LandingPage.jsx'
 import Authentication from './pages/authentication.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import VedioComponent from './pages/VedioCall.jsx'
-import HomeComponent from './pages/home.jsx'
+import HomeComponent from './pages/homePage.jsx'
 import AddMeeting from './pages/addMeeting.jsx'
+import PracticeCoding from './pages/practiceCoding.jsx'
 
 function App() {
 
@@ -15,13 +16,15 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route path='/' element={<LandingPage />} />
-            <Route path='/auth' element={<Authentication />} />
-            <Route path='/:url' element={<VedioComponent />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/auth" element={<Authentication />} />
+            <Route path="/home" element={<HomeComponent />} />
+            <Route path="/addmeeting" element={<AddMeeting />} />
+            <Route path='practicecode' element={<PracticeCoding />} />
+            <Route path="/:url" element={<VedioComponent />} />
           </Routes>
         </AuthProvider>
       </Router>
-
     </div>
   )
 }

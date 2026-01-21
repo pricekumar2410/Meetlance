@@ -1,0 +1,36 @@
+.meetingNav {
+    display: contents;
+    font-size: x-large;
+    cursor: pointer;
+    color: #2563EB;
+}
+
+.meetingNav p{
+    margin-left: 1rem;
+    padding: 0.5rem;
+}
+
+.meeting-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meeting-home img {
+    margin-top: 4rem;
+    width: 50vw;
+    height: 60vh;
+}
+
+.meeting-inside{
+    justify-content: center;
+    align-items: center;
+    padding: 5rem;
+    margin-top: 3rem;
+    margin-left: 2rem;
+}
+
+.joinMeeting {
+    padding: 1rem;
+    margin-top: 1rem;
+}

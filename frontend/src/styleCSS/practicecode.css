@@ -1,0 +1,11 @@
+.codeNav {
+    display: contents;
+    font-size: x-large;
+    cursor: pointer;
+    color: #2563EB;
+}
+
+.codeNav p{
+    margin-left: 1rem;
+    padding: 0.5rem;
+}
