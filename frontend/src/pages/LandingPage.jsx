@@ -19,7 +19,7 @@ export default function LandingPage() {
       <div className='LandingpageHome'>
         <div>
           <h1>Connect with <span style={{color: "red"}}>Meetlance</span></h1>
-          <p>To interact in real time with Meeting</p>
+          <p>To interact with Live Meeting</p>
           <div role='button'>
             <Link to={"/auth"}>Get Started</Link>
             </div>

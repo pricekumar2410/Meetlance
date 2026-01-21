@@ -1,6 +1,7 @@
-import axios, { HttpStatusCode } from "axios";
+import axios from "axios";
+import httpStatus from "http-status";
 import { useNavigate } from "react-router-dom";
-import { Children, createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 
 
@@ -14,6 +15,8 @@ export const AuthProvider = ({ children }) => {
     const authContext = useContext(AuthContext);
     const [userData, setUserData] = useState(authContext);
 
+    const router = useNavigate();
+
     const handleRegister = async (name, username, email, password) => {
         try {
             let request = await client.post("/register", {
@@ -23,7 +26,7 @@ export const AuthProvider = ({ children }) => {
                 password: password
             })
 
-            if (request.status === HttpStatus.CREATED) {
+            if (request.status === httpStatus.CREATED) {
                 return request.data.message;
             }
 
@@ -39,16 +42,14 @@ export const AuthProvider = ({ children }) => {
                 password: password
             })
 
-            if (request.status === HttpStatus.OK) {
+            if (request.status === httpStatus.OK) {
                 localStorage.setItem("token", request.data.token);
-                return router("/home");
+                router("/home");
             }
         } catch (err) {
             throw err;
         }
     }
-
-    const router = useNavigate();
 
     const data = {
         userData, setUserData, handleRegister, handleLogin

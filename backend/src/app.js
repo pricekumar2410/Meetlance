@@ -14,6 +14,7 @@ const server = createServer(app);
 const io = connnectToSocket(server)
 
 const PORT = process.env.PORT || 3000;
+const DBURL = process.env.DB_URL || "mongodb://127.0.0.1:27017/Meetlance";
 
 app.use(cors());
 app.use(express.json({ limit: "40kb" }));
@@ -26,11 +27,15 @@ app.use(express.urlencoded({ limit: "40kb", extended: true }));
 app.use("/api/v1/users", userRoutes);
 
 const start = async () => {
-    await mongoose.connect(process.env.DB_URL);
-    console.log("MongoDB connected successfully!")
+  try {
+    await mongoose.connect(DBURL);
+    console.log("MongoDB connected successfully!");
     server.listen(PORT, () => {
-        console.log(`Server is listing on port : ${PORT}`);
+      console.log(`Server is listening on port: ${PORT}`);
     });
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+  }
 };
 
 start();
