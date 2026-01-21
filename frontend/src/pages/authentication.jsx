@@ -12,8 +12,11 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Authentication() {
+
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -50,111 +53,127 @@ export default function Authentication() {
   }
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        sx={{
-          mt: 8,
-          p: 4,
-          boxShadow: 3,
-          borderRadius: 2,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+    <>
+      <div>
+        <nav style={{ display: "contents", fontSize: "x-large", cursor: "pointer", color: "#2563EB" }}>
+          <p
+            style={{ marginLeft: "1rem", padding: "0.5rem" }}
+            onClick={() => {
+              navigate("/");
+            }}>
+            <b>Meet<span style={{ color: "#DC2626" }}>lance</span></b>
+          </p>
+        </nav>
+      </div>
+      <div>
+        <Container maxWidth="xs">
+          <Box
+            sx={{
+              mt: 8,
+              p: 4,
+              boxShadow: 3,
+              borderRadius: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
 
 
-        <div>
-          <Button sx={{ mt: 2 }} variant={formState === 0 ? "contained" : ""} onClick={() => { setFormState(0) }}>
-            Login
-          </Button>
-          <Button sx={{ mt: 2 }} variant={formState === 1 ? "contained" : ""} onClick={() => { setFormState(1) }}>
-            Register
-          </Button>
-        </div>
+            <div>
+              <Button sx={{ mt: 2 }} variant={formState === 0 ? "contained" : ""} onClick={() => { setFormState(0) }}>
+                Login
+              </Button>
+              <Button sx={{ mt: 2 }} variant={formState === 1 ? "contained" : ""} onClick={() => { setFormState(1) }}>
+                Register
+              </Button>
+            </div>
 
-        <Box component="form" sx={{ mt: 1 }}>
-          {formState === 1 ?
-            <TextField
-              fullWidth
-              id="name"
-              name="name"
-              margin="normal"
-              label="Full Name"
-              value={name}
-              required
-              autoFocus
-              onChange={(e) => setName(e.target.value)}
-            />
-            : <></>}
+            <Box component="form" sx={{ mt: 1 }}>
+              {formState === 1 ?
+                <TextField
+                  fullWidth
+                  id="name"
+                  name="name"
+                  margin="normal"
+                  label="Full Name"
+                  value={name}
+                  required
+                  autoFocus
+                  onChange={(e) => setName(e.target.value)}
+                />
+                : <></>}
 
-          <TextField
-            fullWidth
-            id="username"
-            name="username"
-            margin="normal"
-            label="Username"
-            value={username}
-            required
-            autoFocus
-            onChange={(e) => setUsername(e.target.value)}
-          />
+              <TextField
+                fullWidth
+                id="username"
+                name="username"
+                margin="normal"
+                label="Username"
+                value={username}
+                required
+                autoFocus
+                onChange={(e) => setUsername(e.target.value)}
+              />
 
-          {formState === 1 ?
-            <TextField
-              fullWidth
-              id="email"
-              name="email"
-              margin="normal"
-              label="Email"
-              value={email}
-              required
-              autoFocus
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            : <></>
-          }
+              {formState === 1 ?
+                <TextField
+                  fullWidth
+                  id="email"
+                  name="email"
+                  margin="normal"
+                  label="Email"
+                  value={email}
+                  required
+                  autoFocus
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                : <></>
+              }
 
-          <TextField
-            fullWidth
-            id="password"
-            name="password"
-            margin="normal"
-            label="Password"
-            value={password}
-            type="password"
-            required
-            autoFocus
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <p style={{ color: "red" }}>{error}</p>
-          {/* <Snackbar
+              <TextField
+                fullWidth
+                id="password"
+                name="password"
+                margin="normal"
+                label="Password"
+                value={password}
+                type="password"
+                required
+                autoFocus
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <p style={{ color: "red" }}>{error}</p>
+              {/* <Snackbar
             open={Boolean(error)}
             autoHideDuration={4000}
             onClose={() => setError("")}
             message={error}
           /> */}
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3 }}
-            onClick={handleAuth}
-          >
-            {formState === 0 ? "Login" : "Register"}
-          </Button>
+              <Button
+                type="button"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3 }}
+                onClick={handleAuth}
+              >
+                {formState === 0 ? "Login" : "Register"}
+              </Button>
 
 
-        </Box>
-      </Box>
-      <Snackbar
-        open={open}
-        autoHideDuration={4000}
-        message={message}
-      />
-    </Container>
+            </Box>
+          </Box>
+          <Snackbar
+            open={open}
+            autoHideDuration={4000}
+            message={message}
+          />
+        </Container>
+      </div>
+
+    </>
   );
 }

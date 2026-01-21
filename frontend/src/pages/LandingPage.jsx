@@ -13,8 +13,8 @@ export default function LandingPage() {
     <div className='LandingPageContainer'>
       <nav className='LandingPageNav'>
         <div>
-          <img src='/Meetlance1.png' />
-          <p><b>Meet<span style={{ color: "red" }}>lance</span></b></p>
+          <img src='/MeetLogo.png' />
+          <p><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
           
           <Button onClick={() => {
             navigate("/home");
@@ -31,7 +31,7 @@ export default function LandingPage() {
       </nav>
       <div className='LandingpageHome'>
         <div>
-          <h1>Connect with <span style={{ color: "red" }}>Meetlance</span></h1>
+          <h1>Connect with <span style={{ color: "#DC2626" }}>Meetlance</span></h1>
           <p>To interact with Live Meeting</p>
           <div role='button'>
             <Link to={"/auth"}>Get Started</Link>
