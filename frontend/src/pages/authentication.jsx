@@ -84,7 +84,7 @@ export default function Authentication() {
               name="name"
               margin="normal"
               label="Full Name"
-              value={name || ""}
+              value={name}
               required
               autoFocus
               onChange={(e) => setName(e.target.value)}
@@ -97,7 +97,7 @@ export default function Authentication() {
             name="username"
             margin="normal"
             label="Username"
-            value={username || ""}
+            value={username}
             required
             autoFocus
             onChange={(e) => setUsername(e.target.value)}
@@ -110,7 +110,7 @@ export default function Authentication() {
               name="email"
               margin="normal"
               label="Email"
-              value={email || ""}
+              value={email}
               required
               autoFocus
               onChange={(e) => setEmail(e.target.value)}
@@ -124,8 +124,8 @@ export default function Authentication() {
             name="password"
             margin="normal"
             label="Password"
+            value={password}
             type="password"
-            value={password || ""}
             required
             autoFocus
             onChange={(e) => setPassword(e.target.value)}
@@ -153,7 +153,6 @@ export default function Authentication() {
       <Snackbar
         open={open}
         autoHideDuration={4000}
-        onClose={() => setOpen(false)}
         message={message}
       />
     </Container>
