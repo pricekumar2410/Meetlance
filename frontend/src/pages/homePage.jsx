@@ -36,13 +36,8 @@ function HomeComponent() {
         <>
             <nav className='homeNavbar'>
                 <div>
-                    <img src="/Meetlance1.png" />
-                    <p style={{ display: "contents", fontSize: "x-large" }}><b>Meet<span style={{ color: "red" }}>lance</span></b></p>
-                    <Button onClick={() => {
-                        navigate("/home");
-                    }} sx={{ color: "black", marginLeft: "1rem", alignItems: "center" }}>
-                        <HomeIcon sx={{ color: "orange" }} />Home
-                    </Button>
+                    <img src="/MeetLogo.png" />
+                    <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB"}}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
                 </div>
                 <div>
                     <Button sx={{ color: "black", marginRight: "2rem" }} onClick={() => {

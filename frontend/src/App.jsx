@@ -6,7 +6,8 @@ import { AuthProvider } from './contexts/AuthContext.jsx'
 import VedioComponent from './pages/VedioCall.jsx'
 import HomeComponent from './pages/homePage.jsx'
 import AddMeeting from './pages/addMeeting.jsx'
-import PracticeCoding from './pages/practiceCoding.jsx'
+import PracticeCoding from './Practice_Coding/practiceCoding.jsx'
+
 
 function App() {
 
