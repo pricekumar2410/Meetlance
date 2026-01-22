@@ -40,4 +40,4 @@ function AddMeeting() {
     )
 }
 
-export default withAuth(AddMeeting);
+export default AddMeeting;
