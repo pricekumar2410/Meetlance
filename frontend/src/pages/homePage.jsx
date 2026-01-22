@@ -13,7 +13,6 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import PortraitIcon from '@mui/icons-material/Portrait';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import CodeIcon from '@mui/icons-material/Code';
-import HomeIcon from '@mui/icons-material/Home';
 
 import withAuth from '../utils/withAuth';
 import "../styleCSS/home.css";
@@ -172,4 +171,4 @@ function HomeComponent() {
     );
 }
 
-export default withAuth(HomeComponent);
+export default HomeComponent;

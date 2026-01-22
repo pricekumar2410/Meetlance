@@ -5,7 +5,7 @@ import Authentication from './pages/authentication.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import VedioComponent from './pages/VedioCall.jsx'
 import HomeComponent from './pages/homePage.jsx'
-import AddMeeting from './pages/addMeeting.jsx'
+import AddMeeting from './pages/addmeeting.jsx'
 import PracticeCoding from './Practice_Coding/practiceCoding.jsx'
 
 
