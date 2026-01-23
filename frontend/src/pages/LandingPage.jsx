@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import "../App.css"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 
 const words = ["Meeting", "Coding", "Interview"];
 
 export default function LandingPage() {
 
+  const isAuthenticated = localStorage.getItem("token");
   const navigate = useNavigate();
 
   const [text, setText] = useState("");
@@ -44,20 +44,27 @@ export default function LandingPage() {
     <div className='LandingPageContainer'>
       <nav className='LandingPageNav'>
         <div>
-          <img src='/MeetLogo.png' />
+          <img src='/websiteLogo.png' style={{borderRadius: "20%", border: "1px solid #DC2626"}}/>
           <p><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
 
           <Button onClick={() => {
             navigate("/home");
-          }} sx={{ color: "white", marginLeft: "1rem", alignItems: "center" }}>
+          }} sx={{ color: "white", marginTop: "2px", marginLeft: "1rem", alignItems: "center" }}>
             <GridViewRoundedIcon sx={{ color: "#FFA511" }} /><b>Dashboard</b>
           </Button>
 
         </div>
         <div>
-          <p>Join as Guest</p>
-          <p onClick={() => { navigate("/auth") }}>Register</p>
-          <p onClick={() => { navigate("/auth") }}>Login</p>
+          <div className='guestContainer'>
+            <p onClick={() => { navigate("/joinmeeting") }} style={{color: "white", fontSize: "1rem", cursor: "pointer"}}>Join as Guest</p>
+            <span className="joinPopup-box">Guests can only join meetings!</span> 
+          </div>
+          {!isAuthenticated ? (
+            <>
+              <p onClick={() => { navigate("/auth") }}>Register</p>
+              <p onClick={() => { navigate("/auth") }}>Login</p>
+            </>
+          ) : ""}
         </div>
       </nav>
       <div className='LandingpageHome'>
@@ -65,7 +72,10 @@ export default function LandingPage() {
           <h1>Connect with your <span style={{ color: "#2563EB" }}>Meet</span><span style={{ color: "#DC2626" }}>lance</span></h1>
           <h2 style={{ marginTop: "6px", paddingLeft: "3px" }}>To interact with Live <span style={{ color: "#FFA511" }}>{text}</span></h2>
           <div role='button' className='getStartedDiv'>
-            <Link to={"/auth"} className='getStartedBtn'>Get Started</Link>
+            {!isAuthenticated ?
+              <Link to={"/auth"} className='getStartedBtn'>Get Started</Link> :
+              <Link to={"/home"} className='getStartedBtn'>Get Started</Link>
+            }
           </div>
         </div>
         <div>

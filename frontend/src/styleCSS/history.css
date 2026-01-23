@@ -1,0 +1,16 @@
+.meetingNav {
+    display: flex;
+    font-size: x-large;
+    align-items: center;
+    cursor: pointer;
+    color: #2563EB;
+}
+
+.meetingNav p{
+    margin-top: 5px;
+    padding: 0.5rem;
+}
+
+.cardContainer {
+    margin: 1rem;
+}

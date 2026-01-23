@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { io } from "socket.io-client"
 import "../styleCSS/VedioCall.css";
 import { Badge, IconButton, TextField } from '@mui/material';
@@ -26,6 +27,8 @@ const peerConfigConnections = {
 
 export default function VedioComponent() {
 
+    const { url } = useParams();
+     
     let routeTo = useNavigate();
 
     var socketRef = useRef();

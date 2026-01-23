@@ -24,7 +24,7 @@ function HomeComponent() {
 
     const navigate = useNavigate();
 
-    const {userData} = React.useContext(AuthContext);
+    const { userData } = React.useContext(AuthContext);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -38,7 +38,7 @@ function HomeComponent() {
         <>
             <nav className='homeNavbar'>
                 <div>
-                    <img src="/MeetLogo.png" />
+                    <img src="/websiteLogo.png" style={{borderRadius: "20%", border: "1px solid #2563EB"}}/>
                     <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB" }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
                 </div>
                 <div>
@@ -47,8 +47,10 @@ function HomeComponent() {
                     }}>
                         <CodeIcon />&nbsp;<b>Coding</b>
                     </Button>
-                    <Button sx={{ color: "black", marginRight: "2rem"}}>
-                        <RestoreIcon sx={{fontSize: "1.4rem"}}/> &nbsp;<p><b>history</b></p>
+                    <Button sx={{ color: "black", marginRight: "2rem" }} onClick={() => {
+                        navigate("/history");
+                    }}>
+                        <RestoreIcon sx={{ fontSize: "1.4rem" }} /> &nbsp;<p><b>history</b></p>
                     </Button>
                     <React.Fragment>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -102,23 +104,23 @@ function HomeComponent() {
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                            <MenuItem sx={{cursor: "default"}}>
+                            <MenuItem sx={{ cursor: "default" }}>
                                 <p style={{ display: "contents", fontSize: "x-large" }}><b>Meet<span style={{ color: "red" }}>lance</span></b></p>
                             </MenuItem>
                             <Divider />
-                            <MenuItem sx={{cursor: "default"}}>
+                            <MenuItem sx={{ cursor: "default" }}>
                                 {userData?.name}
                             </MenuItem>
-                            <MenuItem sx={{cursor: "default"}}>
+                            <MenuItem sx={{ cursor: "default" }}>
                                 {userData?.username}
                             </MenuItem>
-                            <MenuItem sx={{cursor: "default"}}>
+                            <MenuItem sx={{ cursor: "default" }}>
                                 {userData?.email}
                             </MenuItem>
                             <Divider />
                             <MenuItem onClick={() => {
                                 localStorage.removeItem("token")
-                                navigate("/auth")
+                                navigate("/")
                             }} style={{ color: "red" }}>
                                 <ListItemIcon>
                                     <Logout fontSize="small" color='error' />
@@ -143,7 +145,7 @@ function HomeComponent() {
                             <p>Create Meeting</p>
                         </div>
                         <div className='btn btn2' onClick={() => {
-                            navigate("/:url");
+                            navigate("/joinmeeting");
                         }}>
                             <IconButton>
                                 <PortraitIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
