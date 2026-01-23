@@ -7,6 +7,8 @@ import VedioComponent from './pages/VedioCall.jsx'
 import HomeComponent from './pages/homePage.jsx'
 import AddMeeting from './pages/addmeeting.jsx'
 import PracticeCoding from './Practice_Coding/practiceCoding.jsx'
+import JoinMeeting from './pages/joinMeeting.jsx'
+import History from './pages/history.jsx'
 
 
 function App() {
@@ -21,7 +23,9 @@ function App() {
             <Route path="/auth" element={<Authentication />} />
             <Route path="/home" element={<HomeComponent />} />
             <Route path="/addmeeting" element={<AddMeeting />} />
+            <Route path="/joinmeeting" element={<JoinMeeting />} />
             <Route path='practicecode' element={<PracticeCoding />} />
+            <Route path='history' element={<History />} />
             <Route path="/:url" element={<VedioComponent />} />
           </Routes>
         </AuthProvider>

@@ -1,0 +1,28 @@
+.JoinNav {
+    font-size: x-large;
+    color: #2563EB;
+    padding: 1rem;
+}
+
+.JoinContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4rem;
+}
+
+.leftContainer {
+    margin-left: 4rem;
+}
+
+.joinvedioContainer {
+    width: 20rem;
+    border: 2px solid black;
+    border-radius: 6px;
+}
+
+.joinImg {
+    height: 25rem;
+    width: 25rem;
+    margin-right: 2rem;
+}

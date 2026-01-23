@@ -1,19 +1,23 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import withAuth from '../utils/withAuth'
 import { useNavigate } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
 
 import "../styleCSS/addMeeting.css";
+import { AuthContext } from '../contexts/AuthContext';
 
 function AddMeeting() {
 
     const navigate = useNavigate();
 
     const [meetingCode, setMeetingCode] = useState("");
+
+    const { addToUserHistory } = useContext(AuthContext);
     const handleJoinVedioCall = async () => {
+        await addToUserHistory(meetingCode)
         if (!meetingCode.trim()) {
             alert("Please enter a meeting code first!");
-            return; 
+            return;
         }
         navigate(`/${meetingCode}`);
     }
@@ -21,6 +25,7 @@ function AddMeeting() {
     return (
         <>
             <nav className='meetingNav'>
+                <img src="/websiteLogo.png" className='logo' />
                 <p onClick={() => {
                     navigate("/home");
                 }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
@@ -31,6 +36,7 @@ function AddMeeting() {
                         <h2>Connect a Secure Video Meeting Instantly</h2>
                     </div>
                     <div className='joinMeeting'>
+                        <p style={{ marginBottom: "12px" }}><b>Enter Meeting Code:</b></p>
                         <TextField onChange={e => setMeetingCode(e.target.value)} id="outlined-basic" label="Meeting Code" variant='outlined' required />
                         <Button onClick={handleJoinVedioCall} variant='contained' sx={{ margin: "0.6rem", marginLeft: "1.2rem" }}>Connect</Button>
                     </div>
