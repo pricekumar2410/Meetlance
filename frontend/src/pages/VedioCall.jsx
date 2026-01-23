@@ -13,8 +13,9 @@ import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import StopScreenShareIcon from '@mui/icons-material/StopScreenShare';
 import ChatIcon from '@mui/icons-material/Chat';
 import { useNavigate } from 'react-router-dom';
+import server from '../environment';
 
-const server_url = "http://localhost:3000";
+const server_url = server;
 
 // Global connections object taaki re-render pe data safe rahe
 var connections = {};
