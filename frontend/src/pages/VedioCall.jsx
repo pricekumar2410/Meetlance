@@ -28,7 +28,7 @@ const peerConfigConnections = {
 export default function VedioComponent() {
 
     const { url } = useParams();
-     
+
     let routeTo = useNavigate();
 
     var socketRef = useRef();
@@ -212,8 +212,10 @@ export default function VedioComponent() {
             socketRef.current.on('chat-message', addMessage)
 
             socketRef.current.on("user-left", (id) => {
-                setVideos((videos) => videos.filter((v) => v.socketId !== id));
+                setVideos((prevVideos) => prevVideos.filter((v) => v.socketId !== id));
                 if (connections[id]) {
+                    connections[id].ontrack = null;
+                    connections[id].onicecandidate = null;
                     connections[id].close();
                     delete connections[id];
                 }
@@ -275,10 +277,21 @@ export default function VedioComponent() {
 
     let handleVideo = () => {
         setVedio(!video);
+        if (window.localStream) {
+            // Track ko stop karne ki jagah disable karein taaki connection na toote
+            window.localStream.getVideoTracks().forEach(track => {
+                track.enabled = !video;
+            });
+        }
     }
 
     let handleAudio = () => {
         setAudio(!audio);
+        if (window.localStream) {
+            window.localStream.getAudioTracks().forEach(track => {
+                track.enabled = !audio;
+            });
+        }
     }
 
     let getDisplayMediaSuccess = (stream) => {
@@ -361,14 +374,7 @@ export default function VedioComponent() {
     }
 
     let handleEndCall = () => {
-        try {
-            let tracks = localVideoRef.current.srcObject.getTracks();
-            tracks.forEach(track => track.stop());
-        } catch (e) { }
-        closeChat();
-        setMessages([]);      // Meeting ki saari chat remove
-        setNewmessages(0);    // Status 0
-        setModel(false);
+        if (socketRef.current) socketRef.current.disconnect();
         routeTo("/home");
     }
 
@@ -396,7 +402,7 @@ export default function VedioComponent() {
                     {showModel ?
                         <div className='chatRoom'>
                             <div className='chatContainer'>
-                                <h2 style={{color: "#DC2626", padding: "4px 0px"}}>Chat Message</h2>
+                                <h2 style={{ color: "#DC2626", padding: "4px 0px" }}>Chat Message</h2>
                                 <div className="chattingDispaly" style={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -409,7 +415,7 @@ export default function VedioComponent() {
                                             <p style={{ fontWeight: "bold", margin: "0" }}>{item.sender}:</p>
                                             <p style={{ margin: "0" }}>{item.data}</p>
                                         </div>
-                                    )) : <p style={{opacity: "0.2"}}>No Message Yet</p>}
+                                    )) : <p style={{ opacity: "0.2" }}>No Message Yet</p>}
 
                                     <div ref={chatEndRef} />
                                 </div>
@@ -453,14 +459,21 @@ export default function VedioComponent() {
                     <p className='Username'>@<b>{username}</b></p>
                     <video ref={localVideoRef} autoPlay muted className='meetUserVideo'></video>
                     <div className='conferenceView'>
-                        {videos.map((video) => (
-                            <div key={video.socketId}>
+                        {videos.map((v) => (
+                            <div key={v.socketId} style={{ position: 'relative' }}>
                                 <video
                                     className='conferenceVideo'
-                                    ref={ref => { if (ref && video.stream) ref.srcObject = video.stream; }}
                                     autoPlay
                                     playsInline
-                                ></video>
+                                    ref={(ref) => {
+                                        if (ref && v.stream) {
+                                            // Check karein agar srcObject pehle se wahi hai toh update na karein
+                                            if (ref.srcObject !== v.stream) {
+                                                ref.srcObject = v.stream;
+                                            }
+                                        }
+                                    }}
+                                />
                             </div>
                         ))}
                     </div>
