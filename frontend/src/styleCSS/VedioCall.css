@@ -1,0 +1,102 @@
+.JoinNav {
+    font-size: x-large;
+    color: #2563EB;
+    padding: 1rem;
+}
+
+.JoinContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4rem;
+}
+
+.leftContainer {
+    margin-left: 4rem;
+}
+
+.joinvedioContainer {
+    width: 20rem;
+    border: 2px solid black;
+    border-radius: 6px;
+}
+
+.joinImg {
+    height: 25rem;
+    width: 25rem;
+    margin-right: 2rem;
+}
+
+
+.meetVedioContainer {
+    position: relative;
+    height: 100vh;
+    background: rgb(1, 4, 48);
+}
+
+.buttonContainer{
+    position: absolute;
+    bottom: 0;
+    left: 30%;
+    text-align: center;
+}
+
+.buttonContainer svg {
+    font-size: 2.5rem;
+}
+
+.Username{
+   position: absolute;
+    left: 1vh;
+    bottom: 41vh;
+    color: white;
+}
+
+.meetUserVideo {
+    position: absolute;
+    left: 1vh;
+    bottom: 10vh;
+    width: auto;
+    height: 30vh;
+    background: black;
+    border: 2px solid rgb(243, 19, 19);
+    border-radius: 10px;
+}
+
+.conferenceView {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.conferenceVideo {
+    width: 30vw;
+    min-width: 20vw;
+    border-radius: 10px;
+    background: black;
+    border: 1px solid red;
+}
+
+.chatRoom {
+    position: absolute;
+    height: 99vh;
+    width: 30vw;
+    bottom: 2px;
+    right: 2px;
+    top: 3px;
+    background: whitesmoke;
+    border-radius: 10px;
+    padding-inline: 10px;
+}
+
+.chatContainer {
+    position: relative;
+    height: 100%;
+}
+
+.chatBox{
+    position: absolute;
+    bottom: 2px;
+}
+
+/* ------------------- */

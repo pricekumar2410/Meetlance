@@ -18,19 +18,20 @@ const LanguageSelector = ({ language, onSelect }) => {
     };
 
     return (
-        <Box mb={1} ml={2}>
-            <Typography mb={1} color='White' fontSize="large">
+        <Box mb={1} ml={2} >
+            <div style={{display: "flex", gap: "7px"}}>
+                <Typography mb={1} color='White' fontSize="large">
                 <b>Language:</b>
             </Typography>
-
             <Button
                 variant="contained"
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
-                sx={{ color: "white", bgcolor: "gray" }}
+                sx={{ color: "white", bgcolor: "gray", paddingTop: "1px", paddingBottom: "1px"}}
             >
                 {language}
             </Button>
+            </div>
 
             <Menu
                 bg="#110c1b"

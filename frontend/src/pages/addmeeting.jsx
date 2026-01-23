@@ -11,6 +11,10 @@ function AddMeeting() {
 
     const [meetingCode, setMeetingCode] = useState("");
     const handleJoinVedioCall = async () => {
+        if (!meetingCode.trim()) {
+            alert("Please enter a meeting code first!");
+            return; 
+        }
         navigate(`/${meetingCode}`);
     }
 
@@ -24,11 +28,11 @@ function AddMeeting() {
             <div className='meeting-home'>
                 <div className='meeting-inside'>
                     <div>
-                        <h2>Join a Secure Video Meeting Instantly</h2>
+                        <h2>Connect a Secure Video Meeting Instantly</h2>
                     </div>
                     <div className='joinMeeting'>
-                        <TextField onChange={e => setMeetingCode(e.target.value)} id="outlined-basic" label="Meeting Code" variant='outlined' />
-                        <Button onClick={handleJoinVedioCall} variant='contained' sx={{margin: "0.6rem", marginLeft: "1.2rem"}}>Join</Button>
+                        <TextField onChange={e => setMeetingCode(e.target.value)} id="outlined-basic" label="Meeting Code" variant='outlined' required />
+                        <Button onClick={handleJoinVedioCall} variant='contained' sx={{ margin: "0.6rem", marginLeft: "1.2rem" }}>Connect</Button>
                     </div>
                 </div>
                 <div>
@@ -40,4 +44,4 @@ function AddMeeting() {
     )
 }
 
-export default AddMeeting;
+export default withAuth(AddMeeting);

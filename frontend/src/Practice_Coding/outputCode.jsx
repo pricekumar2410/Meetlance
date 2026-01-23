@@ -35,7 +35,7 @@ const OutputCode = ({ editorRef, language }) => {
                 setIsError(true);
                 setOutput(result.stderr.split("\n"));
             }
-            
+
             else {
                 setOutput(
                     (result.stdout || result.output || "").split("\n")
@@ -57,27 +57,30 @@ const OutputCode = ({ editorRef, language }) => {
     return (
         <>
             <Box width="35%">
-                <Typography mb={1} color="white" fontSize="large">
-                    <b>Output:</b>
-                </Typography>
+                <div style={{display: "flex", gap: "7px"}}>
+                    <Typography mb={1} color="white" fontSize="large">
+                        <b>Output:</b>
+                    </Typography>
 
-                <Button
-                    variant="contained"
-                    sx={{ color: "green", bgcolor: "gray", mb: "9px" }}
-                    onClick={runCode}
-                    disabled={isLoading}
-                >
-                    {isLoading
-                        ? <CircularProgress size={20} />
-                        : <b>Run Code</b>
-                    }
-                </Button>
+                    <Button
+                        variant="contained"
+                        sx={{ color: "green", bgcolor: "gray", mb: "6px"}}
+                        onClick={runCode}
+                        disabled={isLoading}
+                    >
+                        {isLoading
+                            ? <CircularProgress size={20} />
+                            : <b>Run Code</b>
+                        }
+                    </Button>
+                </div>
 
                 <Box
-                    height="80vh"
+                    height="87.2vh"
                     p={2}
-                    border="1px solid"
+                    border="2px solid"
                     borderRadius="4px"
+                    bgcolor={"#1c1c1d"}
                     borderColor={
                         isError ? "red" : output ? "green" : "#333"
                     }
