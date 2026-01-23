@@ -147,12 +147,7 @@ export default function Authentication() {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <p style={{ color: "red" }}>{error}</p>
-              {/* <Snackbar
-            open={Boolean(error)}
-            autoHideDuration={4000}
-            onClose={() => setError("")}
-            message={error}
-          /> */}
+              
               <Button
                 type="button"
                 fullWidth

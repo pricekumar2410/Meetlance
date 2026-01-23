@@ -3,6 +3,7 @@ import "../App.css"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 
 const words = ["Meeting", "Coding", "Interview"];
 
@@ -23,12 +24,12 @@ export default function LandingPage() {
       timer = setTimeout(() => {
         setText(currentWord.slice(0, charIndex + 1));
         setCharIndex(charIndex + 1);
-      }, 100);
+      }, 40);
     } else if (deleting && charIndex > 0) {
       timer = setTimeout(() => {
         setText(currentWord.slice(0, charIndex - 1));
         setCharIndex(charIndex - 1);
-      }, 60);
+      }, 20);
     } else if (!deleting && charIndex === currentWord.length) {
       timer = setTimeout(() => setDeleting(true), 1000);
     } else if (deleting && charIndex === 0) {
@@ -49,14 +50,14 @@ export default function LandingPage() {
           <Button onClick={() => {
             navigate("/home");
           }} sx={{ color: "white", marginLeft: "1rem", alignItems: "center" }}>
-            <HomeIcon sx={{ color: "#FFA511" }} /><b>Home</b>
+            <GridViewRoundedIcon sx={{ color: "#FFA511" }} /><b>Dashboard</b>
           </Button>
 
         </div>
         <div>
           <p>Join as Guest</p>
-          <p>Register</p>
-          <p>Login</p>
+          <p onClick={() => { navigate("/auth") }}>Register</p>
+          <p onClick={() => { navigate("/auth") }}>Login</p>
         </div>
       </nav>
       <div className='LandingpageHome'>

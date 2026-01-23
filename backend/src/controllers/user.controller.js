@@ -23,9 +23,16 @@ const login = async (req, res) => {
             let token = crypto.randomBytes(20).toString("hex");
             user.token = token;
             await user.save();
-            return res.status(httpStatus.OK).json({ token: token });
-        }else{
-            return res.status(httpStatus.UNAUTHORIZED).json({message: "Invaild Username or password"});
+            return res.status(httpStatus.OK).json({
+                token: token,
+                user: {
+                    name: user.name,
+                    username: user.username,
+                    email: user.email
+                }
+            });
+        } else {
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invaild Username or password" });
         }
 
     } catch (e) {
@@ -62,4 +69,4 @@ const register = async (req, res) => {
 
 }
 
-export {login, register}
+export { login, register }

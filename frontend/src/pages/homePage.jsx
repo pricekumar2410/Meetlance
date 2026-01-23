@@ -18,10 +18,13 @@ import withAuth from '../utils/withAuth';
 import "../styleCSS/home.css";
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { AuthContext } from '../contexts/AuthContext';
 
 function HomeComponent() {
 
     const navigate = useNavigate();
+
+    const {userData} = React.useContext(AuthContext);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -36,16 +39,16 @@ function HomeComponent() {
             <nav className='homeNavbar'>
                 <div>
                     <img src="/MeetLogo.png" />
-                    <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB"}}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
+                    <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB" }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
                 </div>
                 <div>
                     <Button sx={{ color: "black", marginRight: "2rem" }} onClick={() => {
                         navigate("/practicecode");
                     }}>
-                        <CodeIcon />Coding
+                        <CodeIcon />&nbsp;<b>Coding</b>
                     </Button>
-                    <Button sx={{ color: "black", marginRight: "2rem" }}>
-                        <RestoreIcon />history
+                    <Button sx={{ color: "black", marginRight: "2rem"}}>
+                        <RestoreIcon sx={{fontSize: "1.4rem"}}/> &nbsp;<p><b>history</b></p>
                     </Button>
                     <React.Fragment>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -99,18 +102,18 @@ function HomeComponent() {
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                            <MenuItem onClick={handleClose}>
+                            <MenuItem sx={{cursor: "default"}}>
                                 <p style={{ display: "contents", fontSize: "x-large" }}><b>Meet<span style={{ color: "red" }}>lance</span></b></p>
                             </MenuItem>
                             <Divider />
-                            <MenuItem onClick={handleClose}>
-                                Name
+                            <MenuItem sx={{cursor: "default"}}>
+                                {userData?.name}
                             </MenuItem>
-                            <MenuItem onClick={handleClose}>
-                                Username
+                            <MenuItem sx={{cursor: "default"}}>
+                                {userData?.username}
                             </MenuItem>
-                            <MenuItem onClick={handleClose}>
-                                Email
+                            <MenuItem sx={{cursor: "default"}}>
+                                {userData?.email}
                             </MenuItem>
                             <Divider />
                             <MenuItem onClick={() => {
@@ -139,7 +142,9 @@ function HomeComponent() {
                             </IconButton>
                             <p>Create Meeting</p>
                         </div>
-                        <div className='btn btn2'>
+                        <div className='btn btn2' onClick={() => {
+                            navigate("/:url");
+                        }}>
                             <IconButton>
                                 <PortraitIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
                             </IconButton>
@@ -171,4 +176,4 @@ function HomeComponent() {
     );
 }
 
-export default HomeComponent;
+export default withAuth(HomeComponent);

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
 import withAuth from '../utils/withAuth'
 import { useNavigate } from 'react-router-dom';
-import "../styleCSS/practicecode.css";
 import { Box, Stack } from '@mui/material';
 import Editor from '@monaco-editor/react';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
@@ -30,17 +29,17 @@ function PracticeCodingComponent() {
 
     return (
         <>
-            <Box sx={{ minHeight: "100vh", backgroundColor: "#0f0a19", color: "gray", padding: "6px 6px" }}>
+            <Box sx={{ minHeight: "100vh", backgroundColor: "#1f0358", color: "gray", padding: "6px 6px" }}>
                 <div style={{ color: "gray", height: "1.7rem", width: "auto", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
-                    <p style={{ maxWidth: "7rem", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center" }} onClick={() => {
+                    <p style={{ maxWidth: "9rem", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center" }} onClick={() => {
                         navigate("/home");
-                    }}><KeyboardBackspaceIcon sx={{ fontSize: "18px" }} /><span>back to home</span></p>
+                    }}><KeyboardBackspaceIcon sx={{ fontSize: "18px" }} /><span>back to dashboard</span></p>
                 </div>
-                <Stack direction={"row"} spacing={3}>
+                <Stack direction={"row"} spacing={0.5}>
                     <Box width={"65%"}>
                         <LangaugeSelector language={language} onSelect={onSelect} />
                         <Editor
-                            height="80vh"
+                            height="87.2vh"
                             theme='vs-dark'
                             language={language}
                             value={value}
