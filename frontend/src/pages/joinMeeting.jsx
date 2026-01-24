@@ -45,7 +45,7 @@ function joinMeeting() {
             <div className='meeting-home'>
                 <div className='meeting-inside'>
                     <div>
-                        <h2>Connect with Secure Video <Meetings></Meetings> Instantly</h2>
+                        <h2>Connect with Secure Video Meetings Instantly</h2>
                     </div>
                     <div className='joinMeeting'>
                         <p style={{ marginBottom: "12px" }}><b>Enter Meeting Link:</b></p>
