@@ -55,12 +55,14 @@ export default function Authentication() {
   return (
     <>
       <div>
-        <nav style={{ display: "contents", fontSize: "x-large", cursor: "pointer", color: "#2563EB" }}>
-          <p
-            style={{ marginLeft: "1rem", padding: "0.5rem" }}
-            onClick={() => {
-              navigate("/");
-            }}>
+        <nav
+          onClick={() => {
+            navigate("/");
+          }}
+          style={{ display: "flex", fontSize: "x-large", alignItems: "center", cursor: "pointer", color: "#2563EB" }}
+        >
+          <img src="/websiteLogo.png" className='logo' />
+          <p style={{ marginTop: "5px", padding: "0.5rem" }}>
             <b>Meet<span style={{ color: "#DC2626" }}>lance</span></b>
           </p>
         </nav>
@@ -147,7 +149,7 @@ export default function Authentication() {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <p style={{ color: "red" }}>{error}</p>
-              
+
               <Button
                 type="button"
                 fullWidth

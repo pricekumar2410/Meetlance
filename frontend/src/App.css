@@ -11,7 +11,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 3rem 1rem 3rem;
+  padding: 1rem 2rem 1rem 0.5rem;
+}
+
+.websiteName {
+    display: flex;
+    font-size: x-large;
+    align-items: center;
+    cursor: pointer;
+    color: #2563EB;
+}
+
+.websiteName p{
+    margin-top: 5px;
+    padding: 0.5rem;
 }
 
 .LandingPageNav :nth-child(1) {
@@ -84,12 +97,11 @@
   background-color: rgb(133, 129, 129);
   color: grey;
   text-align: center;
-  padding: 5px;
-  border-radius: 4px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 18px;
   top: 3rem;
   right: -2rem;
   transform: translateX(-50%);
-
 }
 
 .guestContainer:hover .joinPopup-box {

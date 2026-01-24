@@ -38,7 +38,7 @@ function HomeComponent() {
         <>
             <nav className='homeNavbar'>
                 <div>
-                    <img src="/websiteLogo.png" style={{borderRadius: "20%", border: "1px solid #2563EB"}}/>
+                    <img src="/websiteLogo.png" style={{ borderRadius: "20%", border: "1px solid #2563EB" }} />
                     <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB" }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
                 </div>
                 <div>
@@ -63,7 +63,7 @@ function HomeComponent() {
                                     aria-haspopup="true"
                                     aria-expanded={open ? 'true' : undefined}
                                 >
-                                    <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                                    <Avatar sx={{ width: 32, height: 32, color: "#2563EB", bgcolor: "#FFA511" }}><b>M</b></Avatar>
                                 </IconButton>
                             </Tooltip>
                         </Box>
@@ -105,7 +105,7 @@ function HomeComponent() {
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
                             <MenuItem sx={{ cursor: "default" }}>
-                                <p style={{ display: "contents", fontSize: "x-large" }}><b>Meet<span style={{ color: "red" }}>lance</span></b></p>
+                                <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB" }}><b>Meet<span style={{ color: "red" }}>lance</span></b></p>
                             </MenuItem>
                             <Divider />
                             <MenuItem sx={{ cursor: "default" }}>
@@ -142,7 +142,7 @@ function HomeComponent() {
                             <IconButton>
                                 <AddBoxIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
                             </IconButton>
-                            <p>Create Meeting</p>
+                            <p><b>Create Meeting</b></p>
                         </div>
                         <div className='btn btn2' onClick={() => {
                             navigate("/joinmeeting");
@@ -150,7 +150,7 @@ function HomeComponent() {
                             <IconButton>
                                 <PortraitIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
                             </IconButton>
-                            <p>Join Meeting</p>
+                            <p><b>Join Meeting</b></p>
                         </div>
                     </div>
                     <div className='all-Btn'>
@@ -160,13 +160,13 @@ function HomeComponent() {
                             <IconButton>
                                 <CodeIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
                             </IconButton>
-                            <p>Pratice Coding</p>
+                            <p><b>Pratice Coding</b></p>
                         </div>
                         <div className='btn btn4'>
                             <IconButton>
                                 <HandshakeIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
                             </IconButton>
-                            <p>Interview</p>
+                            <p><b>Interview</b></p>
                         </div>
                     </div>
                 </div>
