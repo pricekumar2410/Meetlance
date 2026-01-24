@@ -46,9 +46,15 @@ function PracticeCodingComponent() {
                             onMount={onMount}
                             defaultValue={codeSnippets[language]}
                             onChange={(value) => setValue(value)}
+                            options={{
+                                fontSize: 17,      
+                                fontFamily: "Fira Code, monospace",
+                                lineHeight: 26,
+                                minimap: { enabled: false },
+                            }}
                         />
                     </Box>
-                    <OutputCode editorRef={editorRef} language={language}/>
+                    <OutputCode editorRef={editorRef} language={language} />
                 </Stack>
             </Box>
         </>

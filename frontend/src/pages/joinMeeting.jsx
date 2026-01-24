@@ -32,6 +32,7 @@ function joinMeeting() {
     return (
         <>
             <nav className='meetingNav'>
+                <img src="/websiteLogo.png" className='logo' />
                 {!isAuthenticated ?
                     <p onClick={() => {
                         navigate("/");

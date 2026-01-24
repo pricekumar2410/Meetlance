@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { io } from "socket.io-client"
 import "../styleCSS/VedioCall.css";
-import { Badge, IconButton, TextField } from '@mui/material';
-import { Button } from '@mui/material';
+import { Badge, IconButton, TextField, Button } from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import CallEndIcon from '@mui/icons-material/CallEnd';
@@ -12,12 +11,9 @@ import MicOffIcon from '@mui/icons-material/MicOff';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import StopScreenShareIcon from '@mui/icons-material/StopScreenShare';
 import ChatIcon from '@mui/icons-material/Chat';
-import { useNavigate } from 'react-router-dom';
 import server from '../environment';
 
 const server_url = server;
-
-// Global connections object taaki re-render pe data safe rahe
 var connections = {};
 
 const peerConfigConnections = {
@@ -27,36 +23,27 @@ const peerConfigConnections = {
 }
 
 export default function VedioComponent() {
-
     const { url } = useParams();
-
     let routeTo = useNavigate();
 
     var socketRef = useRef();
     let socketIdRef = useRef();
-
     let localVideoRef = useRef();
 
     let [videoAvailable, setVideoAvailable] = useState(true);
     let [audioAvailable, setAudioAvailable] = useState(true);
-
     let [video, setVedio] = useState(true);
     let [audio, setAudio] = useState(true);
-
     let [screen, setScreen] = useState();
     let [screenAvailable, setScreenAvailable] = useState();
 
     let [showModel, setModel] = useState(false);
-
     let [messages, setMessages] = useState([]);
     let [message, setMessage] = useState("");
     let [newMessages, setNewmessages] = useState(0);
 
     let [askForUsername, setAskForUsername] = useState(true);
     let [username, setUsername] = useState("");
-
-    const VideoRef = useRef([]);
-
     let [videos, setVideos] = useState([]);
 
     const getPermissions = async () => {
@@ -64,19 +51,15 @@ export default function VedioComponent() {
             const videoPermission = await navigator.mediaDevices.getUserMedia({ video: true });
             if (videoPermission) {
                 setVideoAvailable(true);
-                console.log('Video permission granted');
             } else {
                 setVideoAvailable(false);
-                console.log('Video permission denied');
             }
 
             const audioPermission = await navigator.mediaDevices.getUserMedia({ audio: true });
             if (audioPermission) {
                 setAudioAvailable(true);
-                console.log('Audio permission granted');
             } else {
                 setAudioAvailable(false);
-                console.log('Audio permission denied');
             }
 
             if (navigator.mediaDevices.getDisplayMedia) {
@@ -103,7 +86,6 @@ export default function VedioComponent() {
         getPermissions();
     }, []);
 
-    // Jab UI lobby se call page par jaye, local video ko dobara attach karein
     useEffect(() => {
         if (askForUsername === false && localVideoRef.current && window.localStream) {
             localVideoRef.current.srcObject = window.localStream;
@@ -125,8 +107,10 @@ export default function VedioComponent() {
         for (let id in connections) {
             if (id === socketIdRef.current) continue;
 
-            // Purane streams remove karke naya stream add karna zaroori hai
-            connections[id].addStream(window.localStream);
+            // SDP Order fix: Use addTrack instead of addStream
+            stream.getTracks().forEach(track => {
+                connections[id].addTrack(track, stream);
+            });
 
             connections[id].createOffer().then((description) => {
                 connections[id].setLocalDescription(description).then(() => {
@@ -206,13 +190,13 @@ export default function VedioComponent() {
         socketRef.current.on('signal', gotMessageFromServer);
 
         socketRef.current.on("connect", () => {
-
             socketRef.current.emit("join-call", window.location.href)
             socketIdRef.current = socketRef.current.id;
 
             socketRef.current.on('chat-message', addMessage)
 
             socketRef.current.on("user-left", (id) => {
+                // Video Hatane ka logic (state filter)
                 setVideos((prevVideos) => prevVideos.filter((v) => v.socketId !== id));
                 if (connections[id]) {
                     connections[id].ontrack = null;
@@ -233,20 +217,23 @@ export default function VedioComponent() {
                             }
                         }
 
-                        connections[socketListId].onaddstream = (event) => {
+                        // Updated from onaddstream to ontrack for better stability
+                        connections[socketListId].ontrack = (event) => {
                             setVideos(prevVideos => {
                                 const videoExists = prevVideos.find(v => v.socketId === socketListId);
                                 if (videoExists) {
-                                    return prevVideos.map(v => v.socketId === socketListId ? { ...v, stream: event.stream } : v);
+                                    return prevVideos.map(v => v.socketId === socketListId ? { ...v, stream: event.streams[0] } : v);
                                 } else {
-                                    return [...prevVideos, { socketId: socketListId, stream: event.stream }];
+                                    return [...prevVideos, { socketId: socketListId, stream: event.streams[0] }];
                                 }
                             });
                         }
-                    }
 
-                    if (window.localStream) {
-                        connections[socketListId].addStream(window.localStream);
+                        if (window.localStream) {
+                            window.localStream.getTracks().forEach(track => {
+                                connections[socketListId].addTrack(track, window.localStream);
+                            });
+                        }
                     }
                 })
 
@@ -279,7 +266,6 @@ export default function VedioComponent() {
     let handleVideo = () => {
         setVedio(!video);
         if (window.localStream) {
-            // Track ko stop karne ki jagah disable karein taaki connection na toote
             window.localStream.getVideoTracks().forEach(track => {
                 track.enabled = !video;
             });
@@ -304,14 +290,19 @@ export default function VedioComponent() {
 
         for (let id in connections) {
             if (id === socketIdRef.current) continue;
-            connections[id].addStream(window.localStream);
-            connections[id].createOffer().then((description) => [
+
+            // Re-negotiate screen share using track replacement
+            stream.getTracks().forEach(track => {
+                connections[id].addTrack(track, stream);
+            });
+
+            connections[id].createOffer().then((description) => {
                 connections[id].setLocalDescription(description)
                     .then(() => {
                         socketRef.current.emit('signal', id, JSON.stringify({ 'sdp': connections[id].localDescription }))
                     })
                     .catch(e => console.log(e))
-            ])
+            })
         }
         stream.getTracks().forEach(track => track.onended = () => {
             setScreen(false)
@@ -332,9 +323,8 @@ export default function VedioComponent() {
     let getDisplayMedia = () => {
         if (screen) {
             if (navigator.mediaDevices.getDisplayMedia) {
-                navigator.mediaDevices.getDisplayMedia({ vedio: true, audio: true })
+                navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
                     .then(getDisplayMediaSuccess)
-                    .then((stream) => { })
                     .catch((e) => { console.log(e) })
             }
         }
@@ -359,15 +349,8 @@ export default function VedioComponent() {
 
     let openChat = () => {
         setModel(!showModel);
-        setNewmessages(0); // Khulte hi count reset
+        setNewmessages(0);
     }
-
-    let closeChat = () => {
-        setModel(!showModel);
-        setNewmessages(0); // Band hote hi status clear (taaki purane msg ka badge na dikhe)
-    }
-
-
 
     let sendMessage = () => {
         socketRef.current.emit("chat-message", message, username);
@@ -383,8 +366,11 @@ export default function VedioComponent() {
         <div>
             {askForUsername === true ?
                 <div>
-                    <nav className='JoinNav'>
-                        <p><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
+                    <nav className='meetingNav'>
+                        <img src="/websiteLogo.png" className='logo' />
+                        <p onClick={() => {
+                            navigate("/home");
+                        }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
                     </nav>
                     <div className='JoinContainer'>
                         <div className='leftContainer'>
@@ -395,7 +381,7 @@ export default function VedioComponent() {
                             </div>
                             <video ref={localVideoRef} autoPlay muted className='joinvedioContainer'></video>
                         </div>
-                        <div> <img src='joinVideo.svg' className='joinImg' /></div>
+                        <div> <img src='joinVideo.svg' className='joinImg' alt="join" /></div>
                     </div>
                 </div> :
                 <div className='meetVedioContainer'>
@@ -439,11 +425,11 @@ export default function VedioComponent() {
                         <IconButton onClick={handleAudio} style={{ color: "white" }}>
                             {(audio === true) ? <MicIcon /> : <MicOffIcon />}
                         </IconButton>
-                        {screenAvailable === true ?
+                        {(screenAvailable && (videos.length > 0 || screen)) && (
                             <IconButton onClick={handleScreen} style={{ color: "white" }}>
-                                {(screen == true) ? <ScreenShareIcon /> : <StopScreenShareIcon />}
-                            </IconButton> : <></>
-                        }
+                                {screen ? <StopScreenShareIcon /> : <ScreenShareIcon />}
+                            </IconButton>
+                        )}
                         <Badge
                             badgeContent={newMessages}
                             max={99}
@@ -454,7 +440,6 @@ export default function VedioComponent() {
                                 <ChatIcon />
                             </IconButton>
                         </Badge>
-
                     </div>
 
                     <p className='Username'>@<b>{username}</b></p>
@@ -468,7 +453,6 @@ export default function VedioComponent() {
                                     playsInline
                                     ref={(ref) => {
                                         if (ref && v.stream) {
-                                            // Check karein agar srcObject pehle se wahi hai toh update na karein
                                             if (ref.srcObject !== v.stream) {
                                                 ref.srcObject = v.stream;
                                             }
@@ -482,4 +466,4 @@ export default function VedioComponent() {
             }
         </div>
     )
-} 
+}

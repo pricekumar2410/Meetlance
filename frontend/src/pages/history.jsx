@@ -53,7 +53,7 @@ function HistoryComponent() {
                             <Card key={i} variant="outlined" className='cardContainer'>
                                 <CardContent>
                                     <Typography gutterBottom sx={{fontSize: 14 }}>
-                                        <b>Code:</b> {e.meetingCode}
+                                        <b>Meeting Code:</b> {e.meetingCode}
                                     </Typography>
                                     <Typography>
                                         <b>Date:</b> {dateFormat(e.date)}

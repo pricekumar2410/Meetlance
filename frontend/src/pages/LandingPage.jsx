@@ -44,9 +44,12 @@ export default function LandingPage() {
     <div className='LandingPageContainer'>
       <nav className='LandingPageNav'>
         <div>
-          <img src='/websiteLogo.png' style={{borderRadius: "20%", border: "1px solid #DC2626"}}/>
-          <p><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
-
+          <div className='websiteName'>
+            <img src="/websiteLogo.png" className='logo' />
+            <p onClick={() => {
+              navigate("/home");
+            }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
+          </div>
           <Button onClick={() => {
             navigate("/home");
           }} sx={{ color: "white", marginTop: "2px", marginLeft: "1rem", alignItems: "center" }}>
@@ -56,8 +59,8 @@ export default function LandingPage() {
         </div>
         <div>
           <div className='guestContainer'>
-            <p onClick={() => { navigate("/joinmeeting") }} style={{color: "white", fontSize: "1rem", cursor: "pointer"}}>Join as Guest</p>
-            <span className="joinPopup-box">Guests can only join meetings!</span> 
+            <p onClick={() => { navigate("/joinmeeting") }} style={{ color: "white", fontSize: "1rem", cursor: "pointer" }}>Join as Guest</p>
+            <span className="joinPopup-box">Guest can only join meetings!</span>
           </div>
           {!isAuthenticated ? (
             <>
