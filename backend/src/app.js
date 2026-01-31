@@ -4,7 +4,10 @@ import { createServer } from "node:http";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
 import cors from "cors";
+import path from "path";
+import fs from "fs";
 import userRoutes from "./routes/users.routes.js"
+import interviewRoutes from "./routes/interview.routes.js"
 import { connnectToSocket } from "./controllers/socketManager.js"
 
 dotenv.config();
@@ -25,6 +28,16 @@ app.use(express.urlencoded({ limit: "40kb", extended: true }));
 // });
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/interview", interviewRoutes);
+
+// Serve frontend static build (if present) and provide SPA fallback so client-side routes work on refresh
+const frontendDist = path.join(process.cwd(), 'frontend', 'dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
 
 const start = async () => {
   try {
