@@ -26,6 +26,8 @@ export default function VedioComponent() {
     const { url } = useParams();
     let routeTo = useNavigate();
 
+    const isAuthenticated = localStorage.getItem("token");
+
     var socketRef = useRef();
     let socketIdRef = useRef();
     let localVideoRef = useRef();
@@ -359,7 +361,8 @@ export default function VedioComponent() {
 
     let handleEndCall = () => {
         if (socketRef.current) socketRef.current.disconnect();
-        routeTo("/home");
+        const destination = isAuthenticated ? "/home" : "/"
+        routeTo(destination);
     }
 
     return (

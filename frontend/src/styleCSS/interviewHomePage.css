@@ -1,18 +1,19 @@
-.homeNavbar {
-    background-color: #E6E6E6;
+.interviewNavbar {
+    background-color: #0B1C3D;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 2rem 0.5rem 2rem;
 }
 
-.homeNavbar :nth-child(1) {
+.interviewNavbar :nth-child(1) {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
-.homeNavbar :nth-child(1) img {
+.interviewNavbar :nth-child(1) img {
     height: 2rem;
     width: 2rem;
     border-radius: 4px;
@@ -20,18 +21,22 @@
 }
 
 
-.homeNavbar :nth-child(2) {
+.interviewNavbar :nth-child(2) {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: medium;
 }
 
-.bottomPart {
+.interviewContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: auto;
+    height: 90vh;
     padding: 0rem 4rem 0rem 4rem;
+    background-color: #133068;
+    color: #FFFFFF;
 }
 
 .all-Btn {
@@ -79,28 +84,11 @@
     background-color: #059669;
 }
 
-.btn3 {
-    background-color: #7C3AED;
-    color: #FFFFFF;
-    border: 2px #6D28D9 solid;
-}
 
-.btn3:hover {
-    background-color: #6D28D9;
-}
-
-.btn4 {
-    background-color: #F59E0B;
-    color: #FFFFFF;
-    border: 2px #D97706 solid;
-}
-
-.btn4:hover {
-    background-color: #D97706;
-}
-
-.bottomImg {
-    width: 24rem;
-    height: 90vh;
-    margin-right: 5rem;
+.historyContainer {
+    width: 40vw;
+    height: 83vh;
+    background-color: #012155;
+    border: 1px solid #0B1C3D;
+    border-radius: 5px;
 }
