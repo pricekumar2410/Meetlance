@@ -29,7 +29,7 @@ function PracticeCodingComponent() {
 
     return (
         <>
-            <Box sx={{ minHeight: "100vh", backgroundColor: "#1f0358", color: "gray", padding: "6px 6px" }}>
+            <Box sx={{ minHeight: "100vh", backgroundColor: "#133068", color: "gray", padding: "6px 6px" }}>
                 <div style={{ color: "gray", height: "1.7rem", width: "auto", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
                     <p style={{ maxWidth: "9rem", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center" }} onClick={() => {
                         navigate("/home");
@@ -47,7 +47,7 @@ function PracticeCodingComponent() {
                             defaultValue={codeSnippets[language]}
                             onChange={(value) => setValue(value)}
                             options={{
-                                fontSize: 17,      
+                                fontSize: 17,
                                 fontFamily: "Fira Code, monospace",
                                 lineHeight: 26,
                                 minimap: { enabled: false },

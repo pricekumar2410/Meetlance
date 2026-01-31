@@ -57,14 +57,14 @@ const OutputCode = ({ editorRef, language }) => {
     return (
         <>
             <Box width="35%">
-                <div style={{display: "flex", gap: "7px"}}>
+                <div style={{ display: "flex", gap: "7px" }}>
                     <Typography mb={1} color="white" fontSize="large">
                         <b>Output:</b>
                     </Typography>
 
                     <Button
                         variant="contained"
-                        sx={{ color: "green", bgcolor: "gray", mb: "6px"}}
+                        sx={{ color: "white", bgcolor: "green", mb: "6px" }}
                         onClick={runCode}
                         disabled={isLoading}
                     >

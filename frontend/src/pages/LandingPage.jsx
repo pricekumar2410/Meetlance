@@ -42,13 +42,15 @@ export default function LandingPage() {
 
   return (
     <div className='LandingPageContainer'>
+      <div className="stars-wrapper">
+        <div className="stars"></div>
+      </div>
+
       <nav className='LandingPageNav'>
         <div>
-          <div className='websiteName'>
-            <img src="/websiteLogo.png" className='logo' />
-            <p onClick={() => {
-              navigate("/home");
-            }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
+          <div>
+            <img src="/websiteLogo.png" style={{ borderRadius: "20%", border: "1px solid #dee1e7" }} />
+            <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB" }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
           </div>
           <Button onClick={() => {
             navigate("/home");
@@ -64,7 +66,7 @@ export default function LandingPage() {
           </div>
           {!isAuthenticated ? (
             <>
-              <p onClick={() => { navigate("/auth") }}>Register</p>
+              <p onClick={() => { navigate("/auth") }} style={{ marginRight: "1rem" }}>Register</p>
               <p onClick={() => { navigate("/auth") }}>Login</p>
             </>
           ) : ""}

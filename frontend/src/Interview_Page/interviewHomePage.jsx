@@ -8,19 +8,18 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
-import RestoreIcon from '@mui/icons-material/Restore';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import PortraitIcon from '@mui/icons-material/Portrait';
-import HandshakeIcon from '@mui/icons-material/Handshake';
-import CodeIcon from '@mui/icons-material/Code';
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 import withAuth from '../utils/withAuth';
-import "../styleCSS/home.css";
+import "../styleCSS/interviewHomePage.css";
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
 import { AuthContext } from '../contexts/AuthContext';
 
-function HomeComponent() {
+function interviewHomePage() {
 
     const navigate = useNavigate();
 
@@ -36,22 +35,14 @@ function HomeComponent() {
     };
     return (
         <>
-            <nav className='homeNavbar'>
-                <div>
-                    <img src="/websiteLogo.png" style={{ borderRadius: "20%", border: "1px solid #dee1e7" }} />
+            <nav className='interviewNavbar'>
+                <div onClick={() => {
+                    navigate("/home");
+                }}>
+                    <img src="/websiteLogo.png" style={{ borderRadius: "20%", border: "1px solid #2563EB" }} />
                     <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB" }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
                 </div>
                 <div>
-                    <Button className='btn3' sx={{ marginRight: "2rem", color: "#6D28D9", borderRadius: "8px", '&:hover': { color: "white" } }} onClick={() => {
-                        navigate("/practicecode");
-                    }}>
-                        <CodeIcon />&nbsp;<b>Coding</b>
-                    </Button>
-                    <Button className='btn2' sx={{ marginRight: "2rem", color: "#059669", borderRadius: "8px", '&:hover': { color: "white" } }} onClick={() => {
-                        navigate("/history");
-                    }}>
-                        <RestoreIcon sx={{ fontSize: "1.4rem" }} /> &nbsp;<p><b>history</b></p>
-                    </Button>
                     <React.Fragment>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                             <Tooltip title="Profile">
@@ -131,53 +122,40 @@ function HomeComponent() {
                     </React.Fragment>
                 </div>
             </nav>
-            <div className='bottomPart'>
-                <div>
-                    <h1>Connnect instantly with video Meetings</h1>
-                    <h3 style={{ padding: "5px" }}>Seamless video calls for teams and friends</h3>
+            <div className='interviewContainer'>
+                <div style={{ marginTop: "-7rem" }}>
+                    <h2>Prepare, Perform & Succeed in Your Interview.</h2>
+                    <h3 style={{ padding: "10px 0px 7px 3px" }}>Create or Join Interview Session!</h3>
                     <div className='all-Btn'>
-                        <div className='btn btn1' onClick={() => {
-                            navigate("/addMeeting");
-                        }}>
+                        <div className='btn btn1'>
                             <IconButton>
                                 <AddBoxIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
                             </IconButton>
-                            <p><b>Create Meeting</b></p>
+                            <p><b>Create Session</b></p>
                         </div>
-                        <div className='btn btn2' onClick={() => {
-                            navigate("/joinmeeting");
-                        }}>
+                        <div className='btn btn2'>
                             <IconButton>
                                 <PortraitIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
                             </IconButton>
-                            <p><b>Join Meeting</b></p>
-                        </div>
-                    </div>
-                    <div className='all-Btn'>
-                        <div className='btn btn3' onClick={() => {
-                            navigate("/practicecode");
-                        }}>
-                            <IconButton>
-                                <CodeIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
-                            </IconButton>
-                            <p><b>Pratice Coding</b></p>
-                        </div>
-                        <div onClick={() => {
-                            navigate("/interviewhomepage")
-                        }} className='btn btn4'>
-                            <IconButton>
-                                <HandshakeIcon sx={{ fontSize: "2.5rem", marginTop: "0.5rem", color: "white" }} />
-                            </IconButton>
-                            <p><b>Interview</b></p>
+                            <p><b>Join Session</b></p>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <img src='/homeimgs.png' className='bottomImg' />
+                <div className='historyContainer'>
+                    <h3 style={{ padding: "10px 0px 2px 10px" }}>Your Past Session</h3>
+                    <div className="cardContainer">
+                        <Card sx={{ minWidth: 275 }}>
+                            <CardContent>
+                                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                                    not histroy yet
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
             </div>
         </>
     );
 }
 
-export default withAuth(HomeComponent);
+export default withAuth(interviewHomePage);

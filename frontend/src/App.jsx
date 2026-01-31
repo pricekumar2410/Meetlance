@@ -9,7 +9,8 @@ import AddMeeting from './pages/addmeeting.jsx'
 import PracticeCoding from './Practice_Coding/practiceCoding.jsx'
 import JoinMeeting from './pages/joinMeeting.jsx'
 import History from './pages/history.jsx'
-
+import InterviewHomePage from './Interview_Page/interviewHomePage.jsx'
+import InterviewRoom from './Interview_Page/interviewRoom.jsx'
 
 function App() {
 
@@ -19,12 +20,15 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
+
             <Route path="/" element={<LandingPage />} />
             <Route path="/auth" element={<Authentication />} />
             <Route path="/home" element={<HomeComponent />} />
             <Route path="/addmeeting" element={<AddMeeting />} />
             <Route path="/joinmeeting" element={<JoinMeeting />} />
             <Route path='practicecode' element={<PracticeCoding />} />
+            <Route path='interviewhomepage' element={<InterviewHomePage />} />
+            <Route path='interviewroom' element={<InterviewRoom />} />
             <Route path='history' element={<History />} />
             <Route path="/:url" element={<VedioComponent />} />
           </Routes>

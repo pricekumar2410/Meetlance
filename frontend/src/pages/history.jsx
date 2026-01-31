@@ -46,23 +46,23 @@ function HistoryComponent() {
                 }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
             </nav>
             {
-                (meetings.length !== 0 ? 
+                (meetings.length !== 0 ?
                     meetings.map((e, i) => {
-                    return (
-                        <>
-                            <Card key={i} variant="outlined" className='cardContainer'>
-                                <CardContent>
-                                    <Typography gutterBottom sx={{fontSize: 14 }}>
-                                        <b>Meeting Code:</b> {e.meetingCode}
-                                    </Typography>
-                                    <Typography>
-                                        <b>Date:</b> {dateFormat(e.date)}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </>
-                    )
-                }) : <><p style={{padding: "1rem"}}><b>No meeting history yet.</b> <br/>Start or join a meeting to see it here.</p></>
+                        return (
+                            <>
+                                <Card key={i} variant="outlined" className='cardContainer'>
+                                    <CardContent>
+                                        <Typography gutterBottom sx={{ fontSize: 14 }}>
+                                            <b>Meeting Code:</b> {e.meetingCode}
+                                        </Typography>
+                                        <Typography>
+                                            <b>Date:</b> {dateFormat(e.date)}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </>
+                        )
+                    }) : <><p style={{ padding: "1rem" }}><b>No meeting history yet.</b> <br />Start or join a meeting to see it here.</p></>
                 )
             }
         </div>
