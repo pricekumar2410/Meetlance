@@ -26,10 +26,10 @@ function App() {
             <Route path="/home" element={<HomeComponent />} />
             <Route path="/addmeeting" element={<AddMeeting />} />
             <Route path="/joinmeeting" element={<JoinMeeting />} />
-            <Route path='practicecode' element={<PracticeCoding />} />
-            <Route path='interviewhomepage' element={<InterviewHomePage />} />
-            <Route path='interviewroom' element={<InterviewRoom />} />
-            <Route path='history' element={<History />} />
+            <Route path='/practicecode' element={<PracticeCoding />} />
+            <Route path='/interviewhomepage' element={<InterviewHomePage />} />
+            <Route path='/interviewroom' element={<InterviewRoom />} />
+            <Route path='/history' element={<History />} />
             <Route path="/:url" element={<VedioComponent />} />
           </Routes>
         </AuthProvider>
