@@ -4,10 +4,13 @@ import {
     Button,
     Snackbar,
     Typography,
-    CircularProgress
+    CircularProgress,
+    Tooltip
 } from '@mui/material';
+import LockIcon from '@mui/icons-material/Lock';
 import React, { useState } from 'react';
 import { executeCode } from '../codeAPI';
+import Confetti from 'react-confetti-boom';
 
 const OutputCode = ({ editorRef, language }) => {
 
@@ -20,6 +23,7 @@ const OutputCode = ({ editorRef, language }) => {
     const [output, setOutput] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const runCode = async () => {
         const sourceCode = editorRef.current?.getValue();
@@ -40,6 +44,8 @@ const OutputCode = ({ editorRef, language }) => {
                 setOutput(
                     (result.stdout || result.output || "").split("\n")
                 );
+                setSuccess(true);
+                setTimeout(() => setSuccess(false), 3000);
             }
 
         } catch (e) {
@@ -62,17 +68,59 @@ const OutputCode = ({ editorRef, language }) => {
                         <b>Output:</b>
                     </Typography>
 
-                    <Button
-                        variant="contained"
-                        sx={{ color: "white", bgcolor: "green", mb: "6px" }}
-                        onClick={runCode}
-                        disabled={isLoading}
+                    <Tooltip
+                        title={language === "Select" ? "Please select a language first" : ""}
+                        arrow
+                        disableHoverListener={language !== "Select"}
                     >
-                        {isLoading
-                            ? <CircularProgress size={20} />
-                            : <b>Run Code</b>
-                        }
-                    </Button>
+                        <span>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    color: "white",
+                                    bgcolor: "green",
+                                    mb: "6px",
+                                    opacity: language === "Select" ? 0.6 : 1,
+                                    cursor: language === "Select" ? "not-allowed" : "pointer",
+                                    transition: "all 0.2s ease",
+                                    "&:hover": {
+                                        bgcolor: language === "Select" ? "#ff6b6b" : "#45a049",
+                                        transform: language === "Select" ? "scale(1)" : "scale(1.05)"
+                                    }
+                                }}
+                                onClick={() => {
+                                    if (language !== "Select") {
+                                        runCode();
+                                    }
+                                }}
+                                disabled={false}
+                            >
+                                {isLoading
+                                    ? <CircularProgress size={20} />
+                                    : <b>Run Code</b>
+                                }
+                            </Button>
+                        </span>
+                    </Tooltip>
+                    {success && (
+                        <Confetti
+                            mode='boom'
+                            width={window.innerWidth}
+                            height={window.innerHeight}
+                            particleCount={300}
+                            gravity={0.3}
+                            initialVelocityX={{ min: -20, max: 20 }}
+                            initialVelocityY={{ min: -25, max: 5 }}
+                            colors={["#22C55E", "#3B82F6", "#FACC15", "#F97316"]}
+                            recycle={false}
+                            confettiSource={{
+                                x: window.innerWidth / 2,
+                                y: window.innerHeight / 2,
+                                w: 0,
+                                h: 0,
+                            }}
+                        />
+                    )}
                 </div>
 
                 <Box

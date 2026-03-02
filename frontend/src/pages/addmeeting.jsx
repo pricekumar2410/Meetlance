@@ -24,11 +24,11 @@ function AddMeeting() {
 
     return (
         <>
-            <nav className='meetingNav'>
-                <img src="/websiteLogo.png" className='logo' />
-                <p onClick={() => {
-                    navigate("/home");
-                }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
+            <nav className='meetingNav' onClick={() => {
+                navigate("/home");
+            }}>
+                <img src="/websiteLogo.png" style={{ marginLeft: "2rem", borderRadius: "10%", border: "1px solid #dee1e7", width: "1.95rem", height: "1.8rem" }} />
+                <p><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
             </nav>
             <div className='meeting-home'>
                 <div className='meeting-inside'>

@@ -37,8 +37,10 @@ function HomeComponent() {
     return (
         <>
             <nav className='homeNavbar'>
-                <div>
-                    <img src="/websiteLogo.png" style={{ borderRadius: "20%", border: "1px solid #dee1e7" }} />
+                <div onClick={() => {
+                    navigate("/");
+                }} style={{ cursor: "pointer" }}>
+                    <img src="/websiteLogo.png" style={{ borderRadius: "10%", width: "1.95rem", height: "1.8rem" }} />
                     <p style={{ display: "contents", fontSize: "x-large", color: "#2563EB" }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
                 </div>
                 <div>
@@ -63,7 +65,7 @@ function HomeComponent() {
                                     aria-haspopup="true"
                                     aria-expanded={open ? 'true' : undefined}
                                 >
-                                    <Avatar sx={{ width: 32, height: 32, color: "#2563EB", bgcolor: "#FFA511" }}><b>M</b></Avatar>
+                                    <Avatar sx={{ width: 34, height: 34, color: "#2563EB", bgcolor: "#FFA511" }}><b>{userData?.name ? (userData?.name).split(" ").map(word => word.charAt(0).toUpperCase()).join("") : ""}</b></Avatar>
                                 </IconButton>
                             </Tooltip>
                         </Box>
@@ -109,13 +111,13 @@ function HomeComponent() {
                             </MenuItem>
                             <Divider />
                             <MenuItem sx={{ cursor: "default" }}>
-                                {userData?.name}
+                                <b>{userData?.name}</b>
                             </MenuItem>
                             <MenuItem sx={{ cursor: "default" }}>
-                                {userData?.username}
+                                <b>{userData?.username}</b>
                             </MenuItem>
                             <MenuItem sx={{ cursor: "default" }}>
-                                {userData?.email}
+                                <b>{userData?.email}</b>
                             </MenuItem>
                             <Divider />
                             <MenuItem onClick={() => {
@@ -133,8 +135,8 @@ function HomeComponent() {
             </nav>
             <div className='bottomPart'>
                 <div>
-                    <h1>Connnect instantly with video Meetings</h1>
-                    <h3 style={{ padding: "5px" }}>Seamless video calls for teams and friends</h3>
+                    <h1 style={{ color: "#1E293B" }}>Your Complete Collaboration & Coding Hub</h1>
+                    <h3 style={{ padding: "5px", color: "#64748B" }}>A smarter way to collaborate and level up your skills.</h3>
                     <div className='all-Btn'>
                         <div className='btn btn1' onClick={() => {
                             navigate("/addMeeting");

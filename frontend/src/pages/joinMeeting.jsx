@@ -32,7 +32,7 @@ function joinMeeting() {
     return (
         <>
             <nav className='meetingNav'>
-                <img src="/websiteLogo.png" className='logo' />
+                <img src="/websiteLogo.png" className='logo' style={{ marginLeft: "2rem", borderRadius: "10%", border: "1px solid #dee1e7", width: "1.95rem", height: "1.8rem" }} />
                 {!isAuthenticated ?
                     <p onClick={() => {
                         navigate("/");

@@ -27,7 +27,7 @@ const LanguageSelector = ({ language, onSelect }) => {
                     variant="contained"
                     onClick={handleClick}
                     endIcon={<KeyboardArrowDownIcon />}
-                    sx={{ color: "white", bgcolor: "#DC2626", paddingTop: "1px", paddingBottom: "1px" }}
+                    sx={{ color: "white", bgcolor: "#2563EB", paddingTop: "1px", paddingBottom: "1px" }}
                 >
                     <b>{language}</b>
                 </Button>

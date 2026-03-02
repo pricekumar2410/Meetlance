@@ -1,0 +1,22 @@
+.interview-room {
+    display: flex;
+    min-height: 100vh;
+    background-color: #133068;
+}
+
+.coding-section {
+    width: 75vw;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.video-section {
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.output-box {
+    border: 2px solid #4CAF50;
+    border-radius: 6px;
+    background-color: #1c1c1d;
+}

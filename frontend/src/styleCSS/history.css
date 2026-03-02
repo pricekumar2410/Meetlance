@@ -1,16 +1,47 @@
-.meetingNav {
+.history-box {
+    background-color: #f4f6f9;
+    min-height: 100vh;
+}
+
+.navbarFix {
+    position: sticky;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 10px rgba(145, 144, 144, 0.1);
+    z-index: 1000;
+    background-color: #D3DBE7;
+}
+
+.meetingNavs {
     display: flex;
     font-size: x-large;
+    width: 100%;
     align-items: center;
-    cursor: pointer;
     color: #2563EB;
+    border-radius: 1px;
+}
+
+.websiteName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .meetingNav p {
-    margin-top: 5px;
     padding: 0.5rem;
 }
 
-.cardContainer {
-    margin: 1rem;
+.historyHead {
+    color: black;
+    margin-left: 27rem
+}
+
+.cardContainers {
+    width: 80%;
+    margin: 25px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
 }
