@@ -63,7 +63,7 @@ export const connnectToSocket = (server) => {
                     message[matchingRoom] = [];
                 }
                 message[matchingRoom].push({ "sender": sender, "data": data, "socket-id-sender": socket.id });
-                
+
                 connections[matchingRoom].forEach((elem) => {
                     io.to(elem).emit("chat-message", data, sender, socket.id);
                 });
@@ -73,7 +73,7 @@ export const connnectToSocket = (server) => {
         socket.on("disconnect", () => {
             console.log("User Disconnected:", socket.id);
             let diffTime = Math.abs(timeOnline[socket.id] - new Date());
-            
+
             // Cleanup connections
             for (const key in connections) {
                 const index = connections[key].indexOf(socket.id);
@@ -82,9 +82,9 @@ export const connnectToSocket = (server) => {
                     connections[key].forEach((id) => {
                         io.to(id).emit("user-left", socket.id);
                     });
-                    
+
                     connections[key].splice(index, 1);
-                    
+
                     if (connections[key].length === 0) {
                         delete connections[key];
                     }

@@ -27,6 +27,7 @@ const login = async (req, res) => {
             return res.status(httpStatus.OK).json({
                 token: token,
                 user: {
+                    _id: user._id,
                     name: user.name,
                     username: user.username,
                     email: user.email

@@ -5,6 +5,7 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import cors from "cors";
 import userRoutes from "./routes/users.routes.js"
+import interviewRoutes from "./routes/interview.routes.js"
 import { connnectToSocket } from "./controllers/socketManager.js"
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ limit: "40kb", extended: true }));
 // });
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/interview", interviewRoutes);
 
 const start = async () => {
   try {

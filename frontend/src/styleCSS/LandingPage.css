@@ -1,0 +1,194 @@
+/* LandingPage CSS */
+/* Wrapper (screen) */
+.stars-wrapper {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    /* ⭐ stars outside hide */
+    z-index: -1;
+}
+
+/* Stars layer */
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 200%;
+    /* ⭐ double height for outside movement */
+
+    background-image: url(/landingImg.jpg);
+    background-repeat: repeat;
+    background-size: auto;
+    /* ✅ NO BLUR */
+
+    animation: starsUp 30s linear infinite;
+}
+
+/* ⭐ Move from bottom outside → top outside */
+@keyframes starsUp {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-50%);
+    }
+}
+
+
+
+.LandingPageContainer {
+    width: 100vw;
+    height: 100vh;
+    /* background: url(/background.png); */
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.LandingPageNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem 1rem 1rem;
+}
+
+.navImg {
+    border-radius: 10%;
+    border: 1px solid #dee1e7;
+    width: 1.95rem;
+    height: 1.8rem;
+    margin-right: 10px;
+}
+
+.Meetlance {
+    display: contents;
+    font-size: x-large;
+    color: #2563EB;
+}
+
+.websiteName {
+    display: flex;
+    font-size: x-large;
+    align-items: center;
+    cursor: pointer;
+    color: #2563EB;
+}
+
+.websiteName p {
+    margin-top: 5px;
+    padding: 0.5rem;
+}
+
+.LandingPageNav :nth-child(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LandingPageNav :nth-child(1) p {
+    display: contents;
+    font-size: 1.4rem;
+    cursor: default;
+    color: #2563EB;
+}
+
+
+.LandingPageNav :nth-child(2) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    color: white;
+    cursor: pointer;
+}
+
+.LandingpageHome {
+    height: 70vh;
+    color: white;
+    padding: 0rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.getStartedDiv {
+    width: 9rem;
+    height: 3.1rem;
+    background-color: #2563EB;
+    margin: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    color: white;
+}
+
+.getStartedDiv:hover {
+    background-color: #134CCA;
+    transform: scale(1.1);
+}
+
+.getStartedBtn {
+    text-decoration: none;
+    color: white;
+    font-weight: bolder;
+}
+
+.joinPopup-box {
+    position: absolute;
+    visibility: hidden;
+    font-size: small;
+    background-color: rgb(133, 129, 129);
+    color: grey;
+    text-align: center;
+    padding: 5px 10px 5px 10px;
+    border-radius: 18px;
+    top: 3rem;
+    right: -2rem;
+    transform: translateX(-50%);
+}
+
+.guestContainer {
+    margin-right: 2.1rem;
+}
+
+.guestContainer:hover .joinPopup-box {
+    visibility: visible;
+}
+
+@media (max-width: 480px) {
+
+    .LandingpageHome {
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .textOrder {
+        order: 2 !important;
+        margin-top: 2rem;
+    }
+
+    .textOrder h1 {
+        width: 100vw;
+        font-size: x-large;
+
+    }
+
+    .imageOrder {
+        padding: 2.5rem;
+        order: 1 !important;
+    }
+
+    .dashboard {
+        margin-left: 3rem !important;
+    }
+
+    .profileBox {
+        margin-left: 3rem;
+    }
+}

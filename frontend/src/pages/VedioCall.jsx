@@ -370,7 +370,7 @@ export default function VedioComponent() {
             {askForUsername === true ?
                 <div>
                     <nav className='meetingNav'>
-                        <img src="/websiteLogo.png" className='logo' />
+                        <img src="/websiteLogo.png" style={{ marginLeft: "2rem", borderRadius: "10%", border: "1px solid #dee1e7", width: "1.95rem", height: "1.8rem" }} />
                         <p onClick={() => {
                             navigate("/home");
                         }}><b>Meet<span style={{ color: "#DC2626" }}>lance</span></b></p>
