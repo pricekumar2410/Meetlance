@@ -70,6 +70,61 @@ export const connnectToSocket = (server) => {
             }
         });
 
+        // Code sync events
+        socket.on("code-change", (code) => {
+            const [matchingRoom, found] = Object.entries(connections)
+                .reduce(([room, isFound], [roomKey, roomValue]) => {
+                    if (!isFound && roomValue.includes(socket.id)) {
+                        return [roomKey, true];
+                    }
+                    return [room, isFound];
+                }, ["", false]);
+
+            if (found) {
+                connections[matchingRoom].forEach((socketId) => {
+                    if (socketId !== socket.id) {
+                        io.to(socketId).emit("code-change", code);
+                    }
+                });
+            }
+        });
+
+        socket.on("language-change", (lang) => {
+            const [matchingRoom, found] = Object.entries(connections)
+                .reduce(([room, isFound], [roomKey, roomValue]) => {
+                    if (!isFound && roomValue.includes(socket.id)) {
+                        return [roomKey, true];
+                    }
+                    return [room, isFound];
+                }, ["", false]);
+
+            if (found) {
+                connections[matchingRoom].forEach((socketId) => {
+                    if (socketId !== socket.id) {
+                        io.to(socketId).emit("language-change", lang);
+                    }
+                });
+            }
+        });
+
+        socket.on("run-code", (output) => {
+            const [matchingRoom, found] = Object.entries(connections)
+                .reduce(([room, isFound], [roomKey, roomValue]) => {
+                    if (!isFound && roomValue.includes(socket.id)) {
+                        return [roomKey, true];
+                    }
+                    return [room, isFound];
+                }, ["", false]);
+
+            if (found) {
+                connections[matchingRoom].forEach((socketId) => {
+                    if (socketId !== socket.id) {
+                        io.to(socketId).emit("run-code", output);
+                    }
+                });
+            }
+        });
+
         socket.on("disconnect", () => {
             console.log("User Disconnected:", socket.id);
             let diffTime = Math.abs(timeOnline[socket.id] - new Date());

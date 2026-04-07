@@ -18,7 +18,7 @@ const theme = createTheme({
       fontWeight: 500,
     },
     p: {
-        fontFamily: "'Inter', sans-serif"
+      fontFamily: "'Inter', sans-serif"
     }
   },
 });

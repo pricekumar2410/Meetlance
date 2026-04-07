@@ -7,14 +7,14 @@ const withAuth = (WrappedComponent) => {
         const router = useNavigate();
 
         const isAuthenticated = () => {
-            if(localStorage.getItem("token")){
+            if (localStorage.getItem("token")) {
                 return true;
             }
             return false;
         }
 
         useEffect(() => {
-            if(!isAuthenticated()) {
+            if (!isAuthenticated()) {
                 router("/auth")
             }
         }, [])
