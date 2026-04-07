@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import withAuth from '../utils/withAuth'
 import "../styleCSS/interviewRoom.css";
 import server from '../environment';
+import { io } from "socket.io-client"
 
 import Editor from '@monaco-editor/react';
 import LanguageSelector from '../Practice_Coding/langaugeSelector';
@@ -18,6 +19,12 @@ import MicOffIcon from '@mui/icons-material/MicOff';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import StopScreenShareIcon from '@mui/icons-material/StopScreenShare';
 
+const peerConfigConnections = {
+    "iceServers": [
+        { "urls": "stun:stun.l.google.com:19302" }
+    ]
+}
+
 function InterviewRoom() {
     const { code } = useParams();
     const location = useLocation();
@@ -26,8 +33,8 @@ function InterviewRoom() {
 
     const interviewCode = code || sessionCode;
 
-    const [value, setValue] = useState("");
-    const [language, setLanguage] = useState("Select");
+    const [value, setValue] = useState(codeSnippets.javascript);
+    const [language, setLanguage] = useState("javascript");
     const [showOutput, setShowOutput] = useState(false);
     const [output, setOutput] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
@@ -44,6 +51,11 @@ function InterviewRoom() {
     const [screenAvailable, setScreenAvailable] = useState(false);
     const [remoteUsername, setRemoteUsername] = useState('Joining...');
 
+    // Socket
+    const socketRef = useRef();
+    const socketIdRef = useRef();
+    const connectionsRef = useRef({});
+
     const onMount = (editor) => {
         editorRef.current = editor;
         editor.focus();
@@ -51,7 +63,9 @@ function InterviewRoom() {
 
     const onSelect = (lang) => {
         setLanguage(lang);
-        setValue(codeSnippets[lang] || "");
+        if (socketRef.current) {
+            socketRef.current.emit("language-change", lang);
+        }
     };
 
     const handleRun = async () => {
@@ -61,15 +75,24 @@ function InterviewRoom() {
         setIsRunning(true);
         try {
             const { run: result } = await executeCode(language, sourceCode);
+            let outputData;
             if (result.stderr) {
-                setOutput(result.stderr.split('\n'));
+                outputData = result.stderr.split('\n');
             } else {
-                setOutput((result.stdout || result.output || '').split('\n'));
+                outputData = (result.stdout || result.output || '').split('\n');
             }
+            setOutput(outputData);
             setShowOutput(true);
+            if (socketRef.current) {
+                socketRef.current.emit("run-code", outputData);
+            }
         } catch (e) {
-            setOutput(['Error: ' + (e.message || 'Unable to run code')]);
+            const errorOutput = ['Error: ' + (e.message || 'Unable to run code')];
+            setOutput(errorOutput);
             setShowOutput(true);
+            if (socketRef.current) {
+                socketRef.current.emit("run-code", errorOutput);
+            }
         } finally {
             setIsRunning(false);
         }
@@ -107,6 +130,12 @@ function InterviewRoom() {
                     if (localVideoRef.current) {
                         localVideoRef.current.srcObject = userMediaStream;
                     }
+                    // Add to existing connections
+                    Object.keys(connectionsRef.current).forEach((socketId) => {
+                        userMediaStream.getTracks().forEach(track => {
+                            connectionsRef.current[socketId].addTrack(track, userMediaStream);
+                        });
+                    });
                 }
             }
         } catch (error) {
@@ -117,6 +146,99 @@ function InterviewRoom() {
     useEffect(() => {
         getPermissions();
     }, []);
+
+    // Socket connection
+    useEffect(() => {
+        socketRef.current = io.connect(server, { secure: false });
+        socketRef.current.on('connect', () => {
+            socketRef.current.emit("join-call", interviewCode);
+            socketIdRef.current = socketRef.current.id;
+        });
+
+        socketRef.current.on('code-change', (code) => {
+            setValue(code);
+        });
+
+        socketRef.current.on('language-change', (lang) => {
+            setLanguage(lang);
+        });
+
+        socketRef.current.on('run-code', (outputData) => {
+            setOutput(outputData);
+            setShowOutput(true);
+        });
+
+        // Video signaling
+        socketRef.current.on('signal', gotMessageFromServer);
+        socketRef.current.on('user-joined', (id, clients) => {
+            clients.forEach((socketId) => {
+                if (socketId !== socketIdRef.current && !connectionsRef.current[socketId]) {
+                    connectionsRef.current[socketId] = new RTCPeerConnection(peerConfigConnections);
+                    connectionsRef.current[socketId].onicecandidate = (event) => {
+                        if (event.candidate) {
+                            socketRef.current.emit("signal", socketId, JSON.stringify({ "ice": event.candidate }));
+                        }
+                    };
+                    connectionsRef.current[socketId].ontrack = (event) => {
+                        if (remoteVideoRef.current) {
+                            remoteVideoRef.current.srcObject = event.streams[0];
+                        }
+                    };
+                    if (window.localStream) {
+                        window.localStream.getTracks().forEach(track => {
+                            connectionsRef.current[socketId].addTrack(track, window.localStream);
+                        });
+                    }
+                }
+            });
+
+            if (id === socketIdRef.current) {
+                Object.keys(connectionsRef.current).forEach((socketId) => {
+                    if (socketId !== socketIdRef.current) {
+                        connectionsRef.current[socketId].createOffer().then((description) => {
+                            connectionsRef.current[socketId].setLocalDescription(description).then(() => {
+                                socketRef.current.emit("signal", socketId, JSON.stringify({ "sdp": description }));
+                            });
+                        });
+                    }
+                });
+            }
+        });
+
+        socketRef.current.on("user-left", (id) => {
+            if (connectionsRef.current[id]) {
+                connectionsRef.current[id].close();
+                delete connectionsRef.current[id];
+            }
+            setRemoteUsername('Joining...');
+        });
+
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+            }
+        };
+    }, [interviewCode]);
+
+    const gotMessageFromServer = (fromId, message) => {
+        const signal = JSON.parse(message);
+        if (fromId !== socketIdRef.current) {
+            if (signal.sdp) {
+                connectionsRef.current[fromId].setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(() => {
+                    if (signal.sdp.type === 'offer') {
+                        connectionsRef.current[fromId].createAnswer().then((description) => {
+                            connectionsRef.current[fromId].setLocalDescription(description).then(() => {
+                                socketRef.current.emit("signal", fromId, JSON.stringify({ "sdp": description }));
+                            });
+                        });
+                    }
+                });
+            }
+            if (signal.ice) {
+                connectionsRef.current[fromId].addIceCandidate(new RTCIceCandidate(signal.ice));
+            }
+        }
+    };
 
     // Video control handlers
     const handleVideo = () => {
@@ -141,12 +263,18 @@ function InterviewRoom() {
         if (window.localStream) {
             window.localStream.getTracks().forEach(track => track.stop());
         }
+        Object.keys(connectionsRef.current).forEach((socketId) => {
+            connectionsRef.current[socketId].close();
+        });
+        if (socketRef.current) {
+            socketRef.current.disconnect();
+        }
         navigate('/interviewhomepage');
     };
 
 
-    const isRunDisabled = isRunning || language === 'Select' || !value || !value.trim();
-    const tooltipMessage = language === 'Select' ? 'Please select a language first' : (!value || !value.trim() ? 'Write some code to run' : '');
+    const isRunDisabled = isRunning || !value || !value.trim();
+    const tooltipMessage = (!value || !value.trim() ? 'Write some code to run' : '');
 
     const editorHeight = showOutput ? 'calc(100vh - 80px - 20vh)' : 'calc(102.1vh - 80px)';
 
@@ -184,7 +312,12 @@ function InterviewRoom() {
                         value={value}
                         onMount={onMount}
                         defaultValue={codeSnippets[language]}
-                        onChange={(val) => setValue(val)}
+                        onChange={(val) => {
+                            setValue(val);
+                            if (socketRef.current) {
+                                socketRef.current.emit("code-change", val);
+                            }
+                        }}
                         options={{
                             fontSize: 16,
                             fontFamily: "Fira Code, monospace",
