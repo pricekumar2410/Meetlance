@@ -80,12 +80,12 @@ function HistoryComponent() {
                             return (
                                 <>
                                     <Card key={i} variant="outlined" sx={{ borderRadius: 2.5 }} className='cardContainers'>
-                                        <CardContent style={{ backgroundColor: "white", color: "black" }}>
+                                        <CardContent className='videohistorycardbox'>
                                             <Typography gutterBottom sx={{ fontSize: 16 }}>
-                                                Meeting Code:<b> {e.meetingCode}</b>
+                                                👤 Meeting Code:<b> {e.meetingCode}</b>
                                             </Typography>
                                             <Typography sx={{ fontSize: 14 }}>
-                                                Date & Time: <b>{dateFormat(e.date)}</b>
+                                                📅 Date & Time: <b>{dateFormat(e.date)}</b>
                                             </Typography>
                                         </CardContent>
                                     </Card>
