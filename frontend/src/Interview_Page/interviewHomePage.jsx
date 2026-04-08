@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -36,6 +39,8 @@ function interviewHomePage() {
     const navigate = useNavigate();
 
     const { userData } = React.useContext(AuthContext);
+
+    const [history, setHistory] = useState([]);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -89,20 +94,72 @@ function interviewHomePage() {
         setCreateFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleCreateSession = () => {
+    // fetch history
+    const fetchHistory = async () => {
+        try {
+            const res = await axios.get(`${server}/api/interview/history`);
+            setHistory(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchHistory();
+    }, []);
+
+    // const handleCreateSession = () => {
+    //     if (!createFormData.interviewerName || !createFormData.interviewUsername || !createFormData.interviewCode) {
+    //         setCreateError('Please fill all fields');
+    //         return;
+    //     }
+    //     handleCloseCreateDialog();
+    //     navigate(`/interview-room/${createFormData.interviewCode}`, {
+    //         state: {
+    //             role: 'interviewer',
+    //             sessionCode: createFormData.interviewCode,
+    //             username: createFormData.interviewUsername,
+    //             name: createFormData.interviewerName
+    //         }
+    //     });
+    // };
+
+    const handleCreateSession = async () => {
         if (!createFormData.interviewerName || !createFormData.interviewUsername || !createFormData.interviewCode) {
             setCreateError('Please fill all fields');
             return;
         }
-        handleCloseCreateDialog();
-        navigate(`/interview-room/${createFormData.interviewCode}`, {
-            state: {
-                role: 'interviewer',
+
+        try {
+            setIsCreating(true);
+
+            // 🔥 API CALL (MOST IMPORTANT)
+            await axios.post(`${server}/api/interview/create-session`, {
                 sessionCode: createFormData.interviewCode,
-                username: createFormData.interviewUsername,
-                name: createFormData.interviewerName
-            }
-        });
+                interviewerName: createFormData.interviewerName,
+                interviewerUsername: createFormData.interviewUsername,
+                interviewerId: userData?._id   // ✅ FIXED (pehle missing tha)
+            });
+
+            handleCloseCreateDialog();
+
+            await fetchHistory();
+
+            navigate(`/interview-room/${createFormData.interviewCode}`, {
+                state: {
+                    role: 'interviewer',
+                    sessionCode: createFormData.interviewCode,
+                    username: createFormData.interviewUsername,
+                    name: createFormData.interviewerName
+                }
+            });
+
+        } catch (error) {
+            console.error("Create session error:", error);
+            setCreateError(error.response?.data?.message || "Failed to create session");
+        } finally {
+            setIsCreating(false);
+        }
     };
 
     // Join Session Handlers
@@ -125,24 +182,90 @@ function interviewHomePage() {
         setJoinFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleJoinSession = () => {
+    // const handleJoinSession = () => {
+    //     if (!joinFormData.candidateName || !joinFormData.candidateUsername || !joinFormData.interviewCode) {
+    //         setJoinError('Please fill all fields');
+    //         return;
+    //     }
+    //     handleCloseJoinDialog();
+    //     navigate(`/interview-room/${joinFormData.interviewCode}`, {
+    //         state: {
+    //             role: 'candidate',
+    //             sessionCode: joinFormData.interviewCode,
+    //             username: joinFormData.candidateUsername,
+    //             name: joinFormData.candidateName
+    //         }
+    //     });
+    // };
+
+    const handleJoinSession = async () => {
         if (!joinFormData.candidateName || !joinFormData.candidateUsername || !joinFormData.interviewCode) {
             setJoinError('Please fill all fields');
             return;
         }
-        handleCloseJoinDialog();
-        navigate(`/interview-room/${joinFormData.interviewCode}`, {
-            state: {
-                role: 'candidate',
+
+        try {
+            setIsJoining(true);
+
+            await axios.post(`${server}/api/interview/join-session`, {
                 sessionCode: joinFormData.interviewCode,
-                username: joinFormData.candidateUsername,
-                name: joinFormData.candidateName
+                candidateName: joinFormData.candidateName,
+                candidateUsername: joinFormData.candidateUsername,
+                candidateId: userData?._id   // ✅ IMPORTANT
+            });
+
+            handleCloseJoinDialog();
+
+            navigate(`/interview-room/${joinFormData.interviewCode}`, {
+                state: {
+                    role: 'candidate',
+                    sessionCode: joinFormData.interviewCode,
+                    username: joinFormData.candidateUsername,
+                    name: joinFormData.candidateName
+                }
+            });
+
+        } catch (error) {
+            console.error("Join session error:", error);
+
+            const msg = error.response?.data?.message;
+
+            if (msg === "Session is full. Only 2 participants allowed.") {
+                setJoinError("❌ Session already full (1 interviewer + 1 student)");
             }
-        });
+            else if (msg === "Session is locked.") {
+                setJoinError("🔒 Session already started. You cannot join now.");
+            }
+            else {
+                setJoinError(msg || "Failed to join session");
+            }
+        } finally {
+            setIsJoining(false);
+        }
     };
 
     const generateSessionCode = () => {
         return Math.random().toString(36).substring(2, 8).toUpperCase();
+    };
+
+    // useEffect(() => {
+    //     const fetchHistory = async () => {
+    //         try {
+    //             const res = await axios.get(`${server}/api/interview/history`);
+    //             setHistory(res.data);
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     };
+
+    //     fetchHistory();
+    // }, []);
+
+    const formatDateTime = (date) => {
+        return new Date(date).toLocaleString("en-IN", {
+            dateStyle: "medium",
+            timeStyle: "short",
+        });
     };
 
     return (
@@ -253,17 +376,33 @@ function interviewHomePage() {
                         </div>
                     </div>
                 </div>
+
+                { /* HISTORY CONTAINER*/}
                 <div className='historyContainer'>
-                    <h3 style={{ padding: "10px 0px 2px 10px" }}>Your Past Session</h3>
-                    <div className="cardContainer">
-                        <Card sx={{ minWidth: 275 }}>
-                            <CardContent>
-                                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                                    not histroy yet
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </div>
+                    <h3 className='historyTitle'>Your Past Session History</h3>
+                    <hr style={{ opacity: 0.1, margin: "0px -8px 1px -8px" }} />
+                    <hr style={{ opacity: 0.1, margin: "0px 0px 8px 0px" }} />
+                    <Card className='historyCardMain'>
+                        <CardContent className='historyScrollArea'>
+                            {history.length === 0 ? (
+                                <p>No history found</p>
+                            ) : (
+                                history.map((item) => (
+                                    <div key={item._id} className='historyItem'>
+
+                                        <p className='detials'>🔑 Session Code: <b>{item.sessionInfo.sessionCode}</b></p>
+
+                                        <p className='detials'>👨‍🏫 Interviewer: <b>{item.interviewerInfo.name}</b></p>
+
+                                        <p className='detials'>🎓 Student: <b>{item.studentInfo?.name || "Waiting..."}</b></p>
+
+                                        <p className='detials'>📅 <b>{formatDateTime(item.sessionInfo.createdAt)}</b></p>
+
+                                    </div>
+                                ))
+                            )}
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
 

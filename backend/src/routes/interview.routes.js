@@ -1,5 +1,6 @@
 import express from 'express';
 import Interview from '../models/interview.model.js';
+import { getInterviewHistory } from "../controllers/interviewController.js";
 import crypto from 'crypto';
 
 const router = express.Router();
@@ -73,8 +74,8 @@ router.post('/join-session', async (req, res) => {
             return res.status(403).json({ message: 'Session is locked. Cannot join.' });
         }
 
-        if (session.studentInfo) {
-            return res.status(403).json({ message: 'Session already has a candidate.' });
+        if (session.sessionInfo.participants >= 2) {
+            return res.status(403).json({ message: 'Session is full. Only 2 participants allowed.' });
         }
 
         // Add student and lock session
@@ -166,5 +167,8 @@ router.get('/user/:userId', async (req, res) => {
         res.status(500).json({ message: 'Error fetching sessions', error: error.message });
     }
 });
+
+// history get
+router.get("/history", getInterviewHistory);
 
 export default router;

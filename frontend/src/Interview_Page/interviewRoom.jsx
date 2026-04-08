@@ -33,8 +33,8 @@ function InterviewRoom() {
 
     const interviewCode = code || sessionCode;
 
-    const [value, setValue] = useState(codeSnippets.javascript);
-    const [language, setLanguage] = useState("javascript");
+    const [value, setValue] = useState(codeSnippets.lang);
+    const [language, setLanguage] = useState("Select");
     const [showOutput, setShowOutput] = useState(false);
     const [output, setOutput] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
@@ -63,6 +63,7 @@ function InterviewRoom() {
 
     const onSelect = (lang) => {
         setLanguage(lang);
+        setValue(codeSnippets[lang] || "");
         if (socketRef.current) {
             socketRef.current.emit("language-change", lang);
         }
@@ -161,6 +162,7 @@ function InterviewRoom() {
 
         socketRef.current.on('language-change', (lang) => {
             setLanguage(lang);
+            setValue(codeSnippets[lang] || "");
         });
 
         socketRef.current.on('run-code', (outputData) => {
