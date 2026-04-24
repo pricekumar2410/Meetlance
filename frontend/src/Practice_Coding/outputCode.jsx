@@ -7,12 +7,14 @@ import {
     CircularProgress,
     Tooltip
 } from '@mui/material';
-import LockIcon from '@mui/icons-material/Lock';
 import React, { useState } from 'react';
 import { executeCode } from '../codeAPI';
 import Confetti from 'react-confetti-boom';
 
 const OutputCode = ({ editorRef, language }) => {
+
+    const [input, setInput] = useState("");
+    const [showInput, setShowInput] = useState(false);
 
     const [toast, setToast] = useState({
         open: false,
@@ -25,28 +27,71 @@ const OutputCode = ({ editorRef, language }) => {
     const [isError, setIsError] = useState(false);
     const [success, setSuccess] = useState(false);
 
+    // 🔥 Detect input-based code
+    const hasInputCode = (code) => {
+        return (
+            // Python
+            code.includes("input(") ||
+
+            // C / C++
+            code.includes("cin") ||
+            code.includes("scanf") ||
+
+            // Java
+            code.includes("Scanner") ||
+            code.includes("nextInt") ||
+            code.includes("nextLine") ||
+
+            // JavaScript / TypeScript (Node.js)
+            code.includes("fs.readFileSync") ||
+            code.includes("readline") ||
+
+            // C#
+            code.includes("Console.ReadLine") ||
+
+            // PHP
+            code.includes("readline") ||
+            code.includes("fgets") ||
+
+            // SQL (generally no input, but keep safe)
+            code.includes("?") // placeholder queries
+        );
+    };
+
     const runCode = async () => {
         const sourceCode = editorRef.current?.getValue();
         if (!sourceCode) return;
+
+        // 👇 Check if input required
+        if (hasInputCode(sourceCode) && !input) {
+            setShowInput(true);
+
+            setToast({
+                open: true,
+                message: "Please enter input first",
+                severity: "warning",
+            });
+            return;
+        }
 
         try {
             setIsLoading(true);
             setIsError(false);
 
-            const { run: result } = await executeCode(language, sourceCode);
+            const result = await executeCode(language, sourceCode, input);
 
-            if (result.stderr) {
+            if (result.output.includes("error") || result.output.includes("Error")) {
                 setIsError(true);
-                setOutput(result.stderr.split("\n"));
             }
 
-            else {
-                setOutput(
-                    (result.stdout || result.output || "").split("\n")
-                );
-                setSuccess(true);
-                setTimeout(() => setSuccess(false), 3000);
-            }
+            setOutput(result.output.split("\n"));
+
+            setSuccess(true);
+            setTimeout(() => setSuccess(false), 3000);
+
+            // 🔄 Reset input after run
+            setInput("");
+            setShowInput(false);
 
         } catch (e) {
             console.log(e);
@@ -93,7 +138,6 @@ const OutputCode = ({ editorRef, language }) => {
                                         runCode();
                                     }
                                 }}
-                                disabled={false}
                             >
                                 {isLoading
                                     ? <CircularProgress size={20} />
@@ -102,6 +146,7 @@ const OutputCode = ({ editorRef, language }) => {
                             </Button>
                         </span>
                     </Tooltip>
+
                     {success && (
                         <Confetti
                             mode='boom'
@@ -123,8 +168,31 @@ const OutputCode = ({ editorRef, language }) => {
                     )}
                 </div>
 
+                {/* 🔥 Input Box (only when needed) */}
+                {showInput && (
+                    <textarea
+                        placeholder="Enter input and press Enter..."
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                runCode();
+                            }
+                        }}
+                        style={{
+                            width: "100%",
+                            height: "10vh",
+                            marginBottom: "5px",
+                            background: "#1c1c1d",
+                            color: "white",
+                            border: "1px solid #333",
+                            padding: "10px"
+                        }}
+                    />
+                )}
+
                 <Box
-                    height="87.2vh"
+                    height={showInput ? "76vh" : "87.2vh"}
                     p={2}
                     border="2px solid"
                     borderRadius="4px"
