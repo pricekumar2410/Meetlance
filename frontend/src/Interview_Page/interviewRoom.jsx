@@ -75,13 +75,17 @@ function InterviewRoom() {
         if (!sourceCode) return;
         setIsRunning(true);
         try {
-            const { run: result } = await executeCode(language, sourceCode);
-            let outputData;
-            if (result.stderr) {
-                outputData = result.stderr.split('\n');
-            } else {
-                outputData = (result.stdout || result.output || '').split('\n');
-            }
+            const result = await executeCode(language, sourceCode) || {};
+
+            let outputText =
+                result.stderr ||
+                result.compile_output ||
+                result.stdout ||
+                result.output ||
+                result.message ||
+                "No output";
+
+            const outputData = outputText.split("\n");
             setOutput(outputData);
             setShowOutput(true);
             if (socketRef.current) {

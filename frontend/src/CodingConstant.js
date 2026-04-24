@@ -1,3 +1,4 @@
+// ⚠️ NOTE: Judge0 me version use nahi hota, but structure maintain karne ke liye rakh rahe hain
 export const LanguageVersion = {
   javascript: "18.15.0",
   python: "3.10.0",
@@ -5,6 +6,9 @@ export const LanguageVersion = {
   typescript: "5.0.3",
   csharp: "6.12.0",
   php: "8.2.3",
+  c: "9.2.0",
+  cpp: "9.2.0",
+  sql: "3.27.2"
 };
 
 export const codeSnippets = {
@@ -39,11 +43,27 @@ class Program {
   }
 }`,
 
-  php: `<?php
-function greet($name) {
+  php: `function greet($name) {
   return "Hello, $name!";
 }
 
-echo greet("Worlds!");
-?>`,
+echo greet("World!");`,
+
+  // ➕ added languages
+
+  c: `#include <stdio.h>
+int main() {
+  printf("Hello, World!");
+  return 0;
+}`,
+
+  cpp: `#include <iostream>
+using namespace std;
+
+int main() {
+  cout << "Hello, World!";
+  return 0;
+}`,
+
+  sql: `SELECT 'Hello, World!';`
 };
