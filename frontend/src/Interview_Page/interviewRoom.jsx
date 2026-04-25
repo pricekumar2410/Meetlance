@@ -49,7 +49,7 @@ function InterviewRoom() {
     const [videoAvailable, setVideoAvailable] = useState(true);
     const [audioAvailable, setAudioAvailable] = useState(true);
     const [screenAvailable, setScreenAvailable] = useState(false);
-    const [remoteUsername, setRemoteUsername] = useState('Joining...');
+    const [remoteUsername, setRemoteUsername] = useState('');
 
     // Socket
     const socketRef = useRef();

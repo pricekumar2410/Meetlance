@@ -96,17 +96,26 @@ function interviewHomePage() {
 
     // fetch history
     const fetchHistory = async () => {
+        if (!userData?._id) return;
+
         try {
-            const res = await axios.get(`${server}/api/interview/history`);
+            const res = await axios.get(`${server}/api/interview/history/${userData._id}`);
             setHistory(res.data);
         } catch (err) {
             console.error(err);
         }
     };
 
+    // useEffect(() => {
+    //     fetchHistory();
+    // }, []);
+
     useEffect(() => {
-        fetchHistory();
-    }, []);
+        if (userData?._id) {
+            fetchHistory();
+            console.log("USER ID:", userData?._id);
+        }
+    }, [userData]);
 
     // const handleCreateSession = () => {
     //     if (!createFormData.interviewerName || !createFormData.interviewUsername || !createFormData.interviewCode) {
@@ -360,7 +369,7 @@ function interviewHomePage() {
             <div className='interviewContainer'>
                 <div style={{ marginTop: "-7rem" }}>
                     <h2>Prepare, Perform & Succeed in Your Interview.</h2>
-                    <h3 style={{ padding: "10px 0px 7px 3px" }}>Create or Join Interview Session!</h3>
+                    <h3 style={{ padding: "10px 0px 7px 3px", color: "#dedfe0" }}>Create or Join Interview Session!</h3>
                     <div className='all-Btn'>
                         <div className='btn btn1' onClick={handleOpenCreateDialog} style={{ cursor: 'pointer' }}>
                             <IconButton>

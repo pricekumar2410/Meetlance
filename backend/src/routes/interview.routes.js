@@ -169,6 +169,6 @@ router.get('/user/:userId', async (req, res) => {
 });
 
 // history get
-router.get("/history", getInterviewHistory);
+router.get("/history/:userId", getInterviewHistory);
 
 export default router;
