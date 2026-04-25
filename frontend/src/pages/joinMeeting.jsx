@@ -48,7 +48,7 @@ function joinMeeting() {
                         <h2>Connect with Secure Video Meetings Instantly</h2>
                     </div>
                     <div className='joinMeeting'>
-                        <p style={{ marginBottom: "12px" }}><b>Enter Meeting Link:</b></p>
+                        <p style={{ marginBottom: "12px" }}><b>Enter Meeting Link or Code:</b></p>
                         <TextField onChange={e => setMeetingLink(e.target.value)} id="outlined-basic" label="Meeting Link" variant='outlined' required />
                         <Button onClick={handleJoinVedioCall} variant='contained' sx={{ margin: "0.6rem", marginLeft: "1.2rem" }}>Join</Button>
                     </div>

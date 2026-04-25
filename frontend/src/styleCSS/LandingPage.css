@@ -128,7 +128,7 @@
 }
 
 .getStartedDiv:hover {
-    background-color: #134CCA;
+    border: 2px solid #134CCA;
     transform: scale(1.1);
 }
 
@@ -154,6 +154,16 @@
 
 .guestContainer {
     margin-right: 2.1rem;
+}
+
+.dashboard {
+    transition: transform 0.2s ease;
+}
+
+.dashboard:hover {
+    background-color: #2563EB;
+    border-radius: 10px;
+    transform: scale(1.1);
 }
 
 .guestContainer:hover .joinPopup-box {

@@ -89,6 +89,14 @@ export default function VedioComponent() {
     }, []);
 
     useEffect(() => {
+        return () => {
+            if (window.localStream) {
+                window.localStream.getTracks().forEach(track => track.stop());
+            }
+        };
+    }, []);
+
+    useEffect(() => {
         if (askForUsername === false && localVideoRef.current && window.localStream) {
             localVideoRef.current.srcObject = window.localStream;
         }
@@ -359,11 +367,49 @@ export default function VedioComponent() {
         setMessage("");
     }
 
+    // let handleEndCall = () => {
+    //     if (socketRef.current) socketRef.current.disconnect();
+    //     const destination = isAuthenticated ? "/home" : "/"
+    //     routeTo(destination);
+    // }
+
     let handleEndCall = () => {
-        if (socketRef.current) socketRef.current.disconnect();
-        const destination = isAuthenticated ? "/home" : "/"
+
+        // 🔴 1. STOP camera + mic (MAIN FIX)
+        if (window.localStream) {
+            window.localStream.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
+
+        // 🔴 2. clear local video
+        if (localVideoRef.current) {
+            localVideoRef.current.srcObject = null;
+        }
+
+        // 🔴 3. close all peer connections
+        for (let id in connections) {
+            if (connections[id]) {
+                connections[id].close();
+                delete connections[id];
+            }
+        }
+
+        // 🔴 4. disconnect socket
+        if (socketRef.current) {
+            socketRef.current.disconnect();
+        }
+
+        // 🔴 5. navigate
+        const destination = isAuthenticated ? "/home" : "/";
         routeTo(destination);
-    }
+    }; useEffect(() => {
+        return () => {
+            if (window.localStream) {
+                window.localStream.getTracks().forEach(track => track.stop());
+            }
+        };
+    }, []);
 
     return (
         <div>
